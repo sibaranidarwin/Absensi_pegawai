@@ -17,17 +17,19 @@
         <li class="nav-item dropdown user user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 @if (Auth::user()->employee)
-                <img src="/storage/{{ Auth::user()->employee->photo }}" class="user-image img-circle elevation-2 alt="User Image">
+                <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image">
+                {{-- <img src="/storage/{{ Auth::user()->employee->photo }}" class="user-image img-circle elevation-2 alt="User Image"> --}}
                 @else
-                <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2 alt="User Image">
+                <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image">
                 @endif
                 <span class="hidden-xs">{{ Auth::user()->name }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <li class="user-header bg-primary">
                 @if (Auth::user()->employee)
-                <img  src="/storage/employee_photos/{{ Auth::user()->employee->photo }}"
-                class="img-circle elevation-2" alt="User Image">
+                {{-- <img  src="/storage/employee_photos/{{ Auth::user()->employee->photo }}"
+                class="img-circle elevation-2" alt="User Image"> --}}
+                <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image">
                 @else
                 <img src="/dist/img/firyanul.png" class="img-circle elevation-2" alt="User Image">
                 @endif

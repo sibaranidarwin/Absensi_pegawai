@@ -31,7 +31,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-8 mx-auto">
+                <div class="col-lg-12 mx-auto">
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">

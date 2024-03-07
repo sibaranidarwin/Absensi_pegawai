@@ -80,7 +80,7 @@ class EmployeeController extends Controller
             $image = $request->file('photo');
             $image_resize = Image::make($image->getRealPath());              
             $image_resize->resize(300, 300);
-            $image_resize->save(public_path(DIRECTORY_SEPARATOR.'storage'.DIRECTORY_SEPARATOR.'employee_photos'.DIRECTORY_SEPARATOR.$filename_store));
+            $image_resize->save(public_path(DIRECTORY_SEPARATOR.'storage'.DIRECTORY_SEPARATOR.$filename_store));
             $employeeDetails['photo'] = $filename_store;
         }
         
@@ -102,6 +102,8 @@ class EmployeeController extends Controller
             $employees = $this->attendanceByDate(Carbon::now());
         }
         $data['employees'] = $employees;
+
+        // dd($data);
         // dd($employees->get(4)->attendanceToday->id);
         return view('admin.employees.attendance')->with($data);
     }

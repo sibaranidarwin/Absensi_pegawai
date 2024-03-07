@@ -42,17 +42,18 @@
                         <div class="input-group mx-auto" style="width:70%">
                             <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                             <input type="text" name="date" id="date" class="form-control text-center" >
+                            <button class="btn btn-flat btn-primary" type="submit">Submit</button>
                         </div>
                     </div>
-                    <div class="card-footer text-center">
+                    {{-- <div class="card-footer text-center">
                         <button class="btn btn-flat btn-primary" type="submit">Submit</button>
-                    </div>
+                    </div> --}}
                     </form>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8 mx-auto">
+            <div class="col-lg-12 mx-auto">
                 @include('messages.alerts')
                 <div class="card card-primary">
                     <div class="card-header">
@@ -87,34 +88,64 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $employee->first_name.' '.$employee->last_name }}</td>
                                     @if($employee->attendanceToday)
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-success">Terekam</span></h6></td>
-                                        <td>
-                                            Terekam sejak {{ $employee->attendanceToday->created_at->format('H:i:s') }} dari {{ $employee->attendanceToday->entry_location}} dengan alamat IP {{ $employee->attendanceToday->entry_ip}}
-                                        </td>
-                                        <?php if($employee->attendanceToday->time<=8.15 && $employee->attendanceToday->time>=7.45) { ?>
-                                            <td><h6 class="text-center"><span class="badge badge-pill badge-success">Hadir Tepat Waktu</span></h6></td>
-                                        <?php } elseif ($employee->attendanceToday->time>8.16 && $employee->attendanceToday->time<=17) {
-                                            ?><td><h6 class="text-center"><span class="badge badge-pill badge-warning">Hadir Terlambat</span></h6></td><?php
-                                        } else {
-                                           ?><td><h6 class="text-center"><span class="badge badge-pill badge-danger">Absensi Tidak Valid</span></h6></td><?php 
-                                        } ?>
-                                            <td>
-                                                Terekam sejak {{ $employee->attendanceToday->updated_at->format('H:i:s') }} dari {{ $employee->attendanceToday->exit_location}} dengan alamat IP {{ $employee->attendanceToday->exit_ip}}
-                                            </td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-success">Terekam</span></h6></td>
+                                    <td>
+                                        Terekam sejak {{ $employee->attendanceToday->created_at->format('H:i:s') }} dari {{ $employee->attendanceToday->entry_location}} dengan alamat IP {{ $employee->attendanceToday->entry_ip}}
+                                    </td>
+                                    @php
+                                        $currentTime = time();
+                                        $validStartTime = strtotime('07:45');
+                                        $validEndTime = strtotime('17:00');
+                                    @endphp
+                                    {{-- @dd($validStartTime) --}}
+                                    @if($currentTime >= $validStartTime && $entryTime <= $validEndTime)
+                                        <td><h6 class="text-center"><span class="badge badge-pill badge-success">Hadir Tepat Waktu</span></h6></td>
+                                    @elseif($currentTime > $validEndTime)
+                                        <td><h6 class="text-center"><span class="badge badge-pill badge-warning">Hadir Terlambat</span></h6></td>
                                     @else
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Absensi Tidak Valid</span></h6></td>
                                     @endif
                                     <td>
+                                        Terekam sejak {{ $employee->attendanceToday->updated_at->format('H:i:s') }} dari {{ $employee->attendanceToday->exit_location}} dengan alamat IP {{ $employee->attendanceToday->exit_ip}}
+                                    </td>
+                                @else
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                @endif                                
+                                <td>
                                     <?php 
-                                    $conn = mysqli_connect("localhost","root","","absensi");
-                                    $loc2=mysqli_query($conn,"SELECT * FROM attendances"); 
-                                    while($loc=mysqli_fetch_array($loc2)) {
-                                    if(!empty($loc['entry_location'])) { 
-                                        echo $loc['entry_location']; 
-                                    } else { echo " - ";} }?></td>
+                                    // Membuat koneksi ke database
+                                    $conn = mysqli_connect("localhost", "root", "", "absensi");
+                                
+                                    // Memeriksa apakah koneksi berhasil
+                                    if ($conn) {
+                                        // Menjalankan query untuk mengambil lokasi masuk
+                                        $result = mysqli_query($conn, "SELECT entry_location FROM attendances LIMIT 1");
+                                
+                                        // Memeriksa apakah query berhasil dijalankan
+                                        if (mysqli_num_rows($result) > 0) {
+                                            // Mengambil baris pertama dari hasil query
+                                            $row = mysqli_fetch_assoc($result);
+                                
+                                            // Memeriksa apakah lokasi masuk tidak kosong
+                                            if (!empty($row['entry_location'])) { 
+                                                echo $row['entry_location']; 
+                                            } else { 
+                                                echo " - ";
+                                            }
+                                        } else {
+                                            echo " - ";
+                                        }
+                                
+                                        // Menutup koneksi ke database
+                                        mysqli_close($conn);
+                                    } else {
+                                        echo "Koneksi ke database gagal";
+                                    }
+                                    ?>
+                                </td>
                                     <td>{{ $employee->desg }}</td>
                                     <td>
                                         @if($employee->attendanceToday)
