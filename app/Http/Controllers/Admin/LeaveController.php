@@ -18,6 +18,7 @@ class LeaveController extends Controller
             $leave->employee = $employee;
             return $leave;
         });
+        // dd($leaves);
         return view('admin.leaves.index')->with('leaves', $leaves);
     }
 

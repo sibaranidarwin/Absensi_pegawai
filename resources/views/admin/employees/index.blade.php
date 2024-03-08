@@ -62,7 +62,7 @@
                                     <td>{{ $employee->department->name }}</td>
                                     <td>{{ $employee->desg }}</td>
                                     <td>{{ $employee->join_date->format('d M, Y') }}</td>
-                                    <td>{{ $employee->salary }}</td>
+                                    <td>Rp {{ number_format($employee->salary, 0, ',', '.') }}</td>
                                     <td>
                                         <a href="{{ route('admin.employees.profile', $employee->id) }}" class="btn btn-flat btn-info">Lihat Profil</a>
                                         <button 

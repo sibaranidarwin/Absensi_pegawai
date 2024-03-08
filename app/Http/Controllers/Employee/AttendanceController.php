@@ -50,6 +50,7 @@ class AttendanceController extends Controller
             'registered_attendance' => null
         ];
         $last_attendance = $employee->attendance->last();
+        // dd($last_attendance);
         if($last_attendance) {
             if($last_attendance->created_at->format('d') == Carbon::now()->format('d')){
                 $data['attendance'] = $last_attendance;
