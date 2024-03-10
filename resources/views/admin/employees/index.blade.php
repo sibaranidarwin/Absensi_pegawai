@@ -32,7 +32,7 @@
     <div class="container-fluid">
         @include('messages.alerts')
         <div class="row">
-            <div class="col-lg-8 mx-auto">
+            <div class="col-lg-12 mx-auto">
                 <div class="card card-primary">
                     <div class="card-header">
                         <div class="card-title text-center">
@@ -62,7 +62,7 @@
                                     <td>{{ $employee->department->name }}</td>
                                     <td>{{ $employee->desg }}</td>
                                     <td>{{ $employee->join_date->format('d M, Y') }}</td>
-                                    <td>{{ $employee->salary }}</td>
+                                    <td>Rp {{ number_format($employee->salary, 0, ',', '.') }}</td>
                                     <td>
                                         <a href="{{ route('admin.employees.profile', $employee->id) }}" class="btn btn-flat btn-info">Lihat Profil</a>
                                         <button 

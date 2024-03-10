@@ -34,16 +34,24 @@ class LeaveController extends Controller
         $cb = $request->input('date');
         $cb2 = strtotime("+3 Days");
         $cb3 = date("d",$cb2);
-        $cb4 = date('d',(strtotime ( '-1 day' , strtotime ($cb))));
+        // $cb4 = date("d", ($request->input('date')));
+        $cb4 = date('d',strtotime($cb));
+        // dd($cb4);
+
             //$start = $request->input('start_date');
             [$start, $end] = explode(' - ', $request->input('date_range'));
             $start = Carbon::parse($start);
-            $end = Carbon::parse($end);
+
+            // dd($start);
+            $end = Carbon::parse($end); 
             $str=date('d',strtotime($start));
+            // dd($str);
+        //sakit tidak boleh diajukan lebih dari 3 hari dari sekarang.
         if($request->input('reason')=="Sakit" && ($cb3<=date('d', strtotime($cb)) || $cb3<=$str || $cb<date('d') || $str<date('d'))) {
              echo'<script>alert("'.$str.' Izin Sakit hanya bisa diajukan maksimal H+3 sejak tanggal ketidakhadiran");window.location="'.$red.'";</script>';
         }
-        else if($request->input('reason')=="Cuti" && (date('d', strtotime($cb)>=$cb4 || $str>=$cb4 || $cb>date('d') || $str>date('d')))) {
+        //Cuti hanya bisa diajukan sehari dari diajukan (h-1)
+        else if($request->input('reason')=="Cuti" && ( $cb4 > $str )) {
              echo'<script>alert("Izin Cuti hanya bisa diajukan maksimal H-1 sejak tanggal ketidakhadiran");window.location="'.$red.'";</script>';
         } else {
         $data = [

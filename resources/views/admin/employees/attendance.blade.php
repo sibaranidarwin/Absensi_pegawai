@@ -1,6 +1,9 @@
 @extends('layouts.app')        
 
 @section('content')
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include DateRangePicker CSS -->
+<link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet">
     <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
@@ -41,18 +44,19 @@
                     <div class="card-body">
                         <div class="input-group mx-auto" style="width:70%">
                             <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                            <input type="text" name="date" id="date" class="form-control text-center" >
+                            <input type="text" name="date" id="date" class="form-control text-center" placeholder="Pilih rentang waktu">
+                            <button class="btn btn-flat btn-primary" type="submit">Submit</button>
                         </div>
                     </div>
-                    <div class="card-footer text-center">
+                    {{-- <div class="card-footer text-center">
                         <button class="btn btn-flat btn-primary" type="submit">Submit</button>
-                    </div>
+                    </div> --}}
                     </form>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-8 mx-auto">
+            <div class="col-lg-12 mx-auto">
                 @include('messages.alerts')
                 <div class="card card-primary">
                     <div class="card-header">
@@ -70,10 +74,11 @@
                         <table class="table table-bordered table-hover" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>No</th>
                                     <th>Nama</th>
                                     <th>Riwayat Database</th>
                                     <th class="none">Riwayat Awal Absensi</th>
+                                    {{-- <th hidden>Tanggal Hadir</th> --}}
                                     <th>Riwayat Absensi</th>
                                     <th class="none">Riwayat Akhir Absensi</th>
                                     <th>Lokasi</th>
@@ -87,34 +92,73 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $employee->first_name.' '.$employee->last_name }}</td>
                                     @if($employee->attendanceToday)
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-success">Terekam</span></h6></td>
-                                        <td>
-                                            Terekam sejak {{ $employee->attendanceToday->created_at->format('H:i:s') }} dari {{ $employee->attendanceToday->entry_location}} dengan alamat IP {{ $employee->attendanceToday->entry_ip}}
-                                        </td>
-                                        <?php if($employee->attendanceToday->time<=8.15 && $employee->attendanceToday->time>=7.45) { ?>
-                                            <td><h6 class="text-center"><span class="badge badge-pill badge-success">Hadir Tepat Waktu</span></h6></td>
-                                        <?php } elseif ($employee->attendanceToday->time>8.16 && $employee->attendanceToday->time<=17) {
-                                            ?><td><h6 class="text-center"><span class="badge badge-pill badge-warning">Hadir Terlambat</span></h6></td><?php
-                                        } else {
-                                           ?><td><h6 class="text-center"><span class="badge badge-pill badge-danger">Absensi Tidak Valid</span></h6></td><?php 
-                                        } ?>
-                                            <td>
-                                                Terekam sejak {{ $employee->attendanceToday->updated_at->format('H:i:s') }} dari {{ $employee->attendanceToday->exit_location}} dengan alamat IP {{ $employee->attendanceToday->exit_ip}}
-                                            </td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-success">Terekam</span></h6></td>
+                                    <td>
+                                        Terekam sejak pukul {{ $employee->attendanceToday->created_at->format('d M Y H:i:s') }} dari {{ $employee->attendanceToday->entry_location}} dengan alamat IP {{ $employee->attendanceToday->entry_ip}}
+                                    </td>
+                                    {{-- <td hidden>
+                                        {{ $employee->attendanceToday->created_at->format('d M, Y')}}
+                                    </td> --}}
+                                    @php
+                                        // Convert created_at time to timestamp
+                                        $entryTime = strtotime($employee->attendanceToday->created_at);
+                                        // Convert the current time to the correct format
+                                        $currentTime = strtotime(date('h:i A', $entryTime));
+
+                                        // Define valid time ranges
+                                        $validStartTime = strtotime('07:45 AM');
+                                        $validEndTime = strtotime('08:15 AM');
+                                        $endOfWorkTime = strtotime('05:00 PM');
+                                    @endphp
+
+                                    @if ($currentTime >= $validStartTime && $currentTime <= $validEndTime)
+                                        <td><h6 class="text-center"><span class="badge badge-pill badge-success">Hadir Tepat Waktu</span></h6></td>
+                                    @elseif ($currentTime > $validEndTime && $currentTime <= $endOfWorkTime)
+                                        <td><h6 class="text-center"><span class="badge badge-pill badge-warning">Hadir Terlambat</span></h6></td>
                                     @else
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Absensi Tidak Valid</span></h6></td>
                                     @endif
                                     <td>
+                                        Terekam sejak {{ $employee->attendanceToday->updated_at->format('H:i:s') }} dari {{ $employee->attendanceToday->exit_location}} dengan alamat IP {{ $employee->attendanceToday->exit_ip}}
+                                    </td>
+                                @else
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
+                                @endif                                
+                                <td>
                                     <?php 
-                                    $conn = mysqli_connect("localhost","root","","absensi");
-                                    $loc2=mysqli_query($conn,"SELECT * FROM attendances"); 
-                                    while($loc=mysqli_fetch_array($loc2)) {
-                                    if(!empty($loc['entry_location'])) { 
-                                        echo $loc['entry_location']; 
-                                    } else { echo " - ";} }?></td>
+                                    // Membuat koneksi ke database
+                                    $conn = mysqli_connect("localhost", "root", "", "absen");
+                                
+                                    // Memeriksa apakah koneksi berhasil
+                                    if ($conn) {
+                                        // Menjalankan query untuk mengambil lokasi masuk
+                                        $result = mysqli_query($conn, "SELECT entry_location FROM attendances LIMIT 1");
+                                
+                                        // Memeriksa apakah query berhasil dijalankan
+                                        if (mysqli_num_rows($result) > 0) {
+                                            // Mengambil baris pertama dari hasil query
+                                            $row = mysqli_fetch_assoc($result);
+                                
+                                            // Memeriksa apakah lokasi masuk tidak kosong
+                                            if (!empty($row['entry_location'])) { 
+                                                echo $row['entry_location']; 
+                                            } else { 
+                                                echo " - ";
+                                            }
+                                        } else {
+                                            echo " - ";
+                                        }
+                                
+                                        // Menutup koneksi ke database
+                                        mysqli_close($conn);
+                                    } else {
+                                        echo "Koneksi ke database gagal";
+                                    }
+                                    ?>
+                                </td>
                                     <td>{{ $employee->desg }}</td>
                                     <td>
                                         @if($employee->attendanceToday)
@@ -183,20 +227,71 @@
 
 @endsection
 @section('extra-js')
+{{-- <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> --}}
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+{{-- <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 <script>
     $(document).ready(function() {
-        $('#dataTable').DataTable({
-            responsive:true,
+        // Inisialisasi DataTables
+        var table = $('#dataTable').DataTable({
+            responsive: true,
             autoWidth: false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: 'Export Excel',
+                    filename: 'Data Kehadiran', // Nama file Excel yang akan diunduh
+                    title: 'Data Kehadiran', // Judul tabel dalam Excel
+                    exportOptions: {}
+                },
+                'pdfHtml5',
+                'print'
+            ]
         });
+
+        // Mengirimkan data form saat tombol submit ditekan
+        $(document).on('submit', '#attendanceForm', function(e) {
+            e.preventDefault(); // Menghentikan perilaku default form submit
+            
+            // Ambil rentang tanggal yang dipilih
+            var startDate = $('#date').data('daterangepicker').startDate.format('YYYY-MM-DD');
+            var endDate = $('#date').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+            // Kirim data ke server menggunakan AJAX
+            $.ajax({
+                url: "{{ route('admin.employees.attendance') }}", // Ganti dengan URL tujuan Anda
+                method: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    start_date: startDate,
+                    end_date: endDate
+                },
+                success: function(response) {
+                    // Lakukan sesuatu setelah permintaan berhasil
+                    console.log("Data berhasil disimpan:", response);
+                },
+                error: function(xhr, status, error) {
+                    // Tangani kesalahan jika ada
+                    console.error("Terjadi kesalahan:", error);
+                }
+            });
+        });
+
+        // Menambahkan rentang tanggal
         $('#date').daterangepicker({
-            "singleDatePicker": true,
-            "showDropdowns": true,
             "locale": {
                 "format": "DD-MM-YYYY"
+            },
+            "ranges": {
+                'Rentang Kustom': [moment().startOf('day'), moment().endOf('day')]
             }
         });
     });
 </script>
+
 @endsection

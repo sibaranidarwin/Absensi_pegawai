@@ -31,7 +31,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="col-lg-12 col-md-10 mx-auto">
                     <!-- general form elements -->
                     @include('messages.alerts')
                     <div class="card card-primary">

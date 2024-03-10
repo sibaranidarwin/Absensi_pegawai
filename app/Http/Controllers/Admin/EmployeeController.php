@@ -80,7 +80,7 @@ class EmployeeController extends Controller
             $image = $request->file('photo');
             $image_resize = Image::make($image->getRealPath());              
             $image_resize->resize(300, 300);
-            $image_resize->save(public_path(DIRECTORY_SEPARATOR.'storage'.DIRECTORY_SEPARATOR.'employee_photos'.DIRECTORY_SEPARATOR.$filename_store));
+            $image_resize->save(public_path(DIRECTORY_SEPARATOR.'storage'.DIRECTORY_SEPARATOR.$filename_store));
             $employeeDetails['photo'] = $filename_store;
         }
         
@@ -94,17 +94,43 @@ class EmployeeController extends Controller
         $data = [
             'date' => null
         ];
-        if($request->all()) {
-            $date = Carbon::create($request->date);
-            $employees = $this->attendanceByDate($date);
-            $data['date'] = $date->format('d M, Y');
+        
+        if($request->has('date')) {
+            $dateRange = explode(' - ', $request->date);
+            $startDate = Carbon::createFromFormat('d-m-Y', $dateRange[0])->startOfDay();
+            $endDate = Carbon::createFromFormat('d-m-Y', $dateRange[1])->endOfDay();
+            
+            $employees = $this->attendanceByDateRange($startDate, $endDate);
+            $data['date'] = $startDate->format('d M, Y') . ' - ' . $endDate->format('d M, Y');
         } else {
             $employees = $this->attendanceByDate(Carbon::now());
         }
+        
         $data['employees'] = $employees;
-        // dd($employees->get(4)->attendanceToday->id);
+    
         return view('admin.employees.attendance')->with($data);
     }
+    
+    public function attendanceByDateRange($startDate, $endDate) {
+        $attendances = Attendance::whereBetween('created_at', [$startDate, $endDate])->get();
+    
+        $employees = collect();
+    
+        foreach ($attendances as $attendance) {
+            $employee = Employee::select('id', 'first_name', 'last_name', 'desg')->find($attendance->employee_id);
+            if ($employee) {
+                $employee->attendanceToday = $attendance;
+                $employees->push($employee);
+            }
+        }
+    
+        return $employees;
+    }
+    
+    
+    
+    
+    
 
     public function attendanceByDate($date) {
         $employees = DB::table('employees')->select('id', 'first_name', 'last_name', 'desg', 'department_id')->get();

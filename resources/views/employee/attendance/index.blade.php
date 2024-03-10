@@ -31,7 +31,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3 mx-auto">
+                <div class="col-md-4 mx-auto">
                     <div class="card">
                         <div class="card-header">
                                 <h5 class="text-center text-primary" style="text-align: center !important">Cari Absensi dengan rentang tanggal</h5>
@@ -47,6 +47,7 @@
                                                 <input type="text" name="date_range" placeholder="Start Date" class="form-control text-center"
                                                 id="date_range"
                                                 >
+                                                <input type="submit" name="" class="btn btn-primary" value="Submit">
                                                 @error('date_range')
                                                 <div class="ml-2 text-danger">
                                                     {{ $message }}
@@ -55,7 +56,7 @@
                                             </div>
                                         </fieldset>
                                         
-                                            <input type="submit" name="" class="btn btn-primary" value="Submit">
+                                            {{-- <input type="submit" name="" class="btn btn-primary" value="Submit"> --}}
                                         </div>
                                         
                                     </form>

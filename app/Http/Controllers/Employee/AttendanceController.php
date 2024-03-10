@@ -50,6 +50,7 @@ class AttendanceController extends Controller
             'registered_attendance' => null
         ];
         $last_attendance = $employee->attendance->last();
+        // dd($last_attendance);
         if($last_attendance) {
             if($last_attendance->created_at->format('d') == Carbon::now()->format('d')){
                 $data['attendance'] = $last_attendance;
@@ -95,19 +96,44 @@ class AttendanceController extends Controller
         ]);
         // dd($attendance);
         $attendance->save();
-        if(date('h')<=9) {
-         $request->session()->flash('success', 'Absensi Anda berhasil direkam sistem');
-         } else {
-            $request->session()->flash('success', ' Absensi Anda berhasil direkam sistem dengan catatan keterlambatan');
-         }
+        if(date('a') == 'am' && strtotime(date('h:i')) <= strtotime('08:15')) {
+            $request->session()->flash('success', 'Absensi Anda berhasil direkam sistem');
+        } else {
+            $request->session()->flash('success', 'Absensi Anda berhasil direkam sistem dengan catatan keterlambatan');
+        }
         return redirect()->route('employee.attendance.create')->with('employee', Auth::user()->employee);
     }
 
+    public function exit_location($latitude, $longitude)
+    {
+        // Mendapatkan data lokasi dari OpenStreetMap Nominatim API
+        $response = Http::get('https://nominatim.openstreetmap.org/reverse', [
+            'format' => 'json',
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'zoom' => 18, // Zoom level untuk mendapatkan detail alamat yang lebih baik
+            'addressdetails' => 1, // Mengaktifkan detail alamat
+        ]);
+
+        // Memeriksa apakah respon berhasil dan memiliki data yang valid
+        if ($response->successful()) {
+            // Mendapatkan display name (alamat) dari properti respon
+            $displayName = $response->json()['display_name'];
+            return $displayName;
+        } else {
+            // Jika respon gagal atau tidak valid, kembalikan pesan error
+            return 'Failed to fetch location data';
+        }
+    }
+    
     // Hapus data record absensi
     public function update(Request $request, $attendance_id) {
+        $latitude = 3.580552; 
+        $longitude = 98.675666;
+        
         $attendance = Attendance::findOrFail($attendance_id);
         $attendance->exit_ip = $request->ip();
-        $attendance->exit_location = $request->exit_location;
+        $attendance->exit_location = $this->exit_location($latitude, $longitude);
         $attendance->registered = 'yes';
         $attendance->save();
         $request->session()->flash('success', 'Absensi Anda berhasil diakhiri');
