@@ -243,18 +243,34 @@
                             </div>
                             <!-- /.card-body -->
                             @if (!$registered_attendance)
-                            <div class="card-footer" >
+                            <div class="card-footer">
                                 @if (!$attendance)
-                                <button type="submit" class="btn btn-primary p-3" style="font-size:1.2rem">
-                                    Absen Masuk
-                                </button>    
+                                    <button type="submit" class="btn btn-primary p-3" style="font-size:1.2rem">
+                                        Absen Masuk
+                                    </button>    
                                 @else
-                                <button type="submit" class="btn btn-primary pull-right p-3" style="font-size:1.2rem">
-                                    Absen Keluar/Selesai
-                                </button>
+                                    @php
+                                        // Mendapatkan waktu saat ini
+                                        $currentTime = now();
+                                        // Mengatur zona waktu ke Waktu Indonesia Barat (WIB)
+                                        $currentTime->setTimezone('Asia/Jakarta');
+                                        // Mendapatkan jam saat ini
+                                        $currentHour = $currentTime->format('H');
+                                    @endphp
+                        
+                                    {{-- Validasi untuk tombol Absen Keluar --}}
+                                    @if ($currentHour >= 17)
+                                        <button type="submit" class="btn btn-primary pull-right p-3" style="font-size:1.2rem">
+                                            Absen Keluar/Selesai
+                                        </button>
+                                    @else
+                                        <div class="alert alert-warning" role="alert">
+                                            Anda tidak dapat melakukan absen keluar sebelum pukul 17.00 WIB.
+                                        </div>
+                                    @endif
                                 @endif
                             </div>   
-                            @endif
+                        @endif                        
                         <?php } ?>
                             
                         </form>

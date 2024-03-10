@@ -54,7 +54,7 @@
                     @if ( Auth::user()->employee )
                     <a href="{{ route('employee.profile') }}" class="btn btn-default btn-flat">Profile</a>
                     @else
-                    <a href="{{ route('admin.reset-password') }}" class="btn btn-default btn-flat">Change Password</a>
+                    {{-- <a href="{{ route('admin.reset-password') }}" class="btn btn-default btn-flat">Change Password</a> --}}
                     @endif
                 </div>
                 <div class="pull-right">

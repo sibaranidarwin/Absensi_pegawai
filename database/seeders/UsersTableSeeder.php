@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use App\Attendance;
 use App\Department;
@@ -29,15 +30,15 @@ class UsersTableSeeder extends Seeder
         $adminRole =  Role::where('name', 'admin')->first();
 
         $admin = User::create([
-            'name' => 'Admin User',
+            'name' => 'Administrator',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make('admin')
+            'password' => Hash::make('adminadmin')
         ]);
 
         $employee = User::create([
-            'name' => 'Akashdeep Nandi',
-            'email' => 'akash@gmail.com',
-            'password' => Hash::make('akash')
+            'name' => 'Timothy Henan',
+            'email' => 'henan@gmail.com',
+            'password' => Hash::make('timotii')
         ]);
 
         // 
@@ -47,38 +48,35 @@ class UsersTableSeeder extends Seeder
         $admin->roles()->attach($adminRole);
         $employee = Employee::create([
             'user_id' => $employee->id,
-            'first_name' => 'Akashdeep',
-            'last_name' => 'Nandi',
+            'first_name' => 'Timoty ',
+            'last_name' => 'Henan',
             'dob' => $dob->format('Y-m-d'),
             'sex' => 'Male',
-            'desg' => 'Manager',
+            'desg' => 'Staff',
             'department_id' => '1',
             'join_date' => $join->format('Y-m-d'),
             'salary' => 10520.75
         ]);
 
-        Department::create(['name' => 'Marketing']);
-        Department::create(['name' => 'Sales']);
-        Department::create(['name' => 'Logistics']);
-        Department::create(['name' => 'Human Resources']);
-
+        Department::create(['name' => 'Pegawai']);
+        
         // Attendance seeder
-        $create = Carbon::create(2020, 8, 17, 10, 00, 23, 'Asia/Kolkata');
-        $update = Carbon::create(2020, 8, 17, 17, 00, 23, 'Asia/Kolkata');
-        for ($i=0; $i < 6; $i++) { 
-            $attendance = Attendance::create([
-                'employee_id' => $employee->id,
-                'entry_ip' => '123.156.125.123',
-                'entry_location' => 'Kanakpur: '.$i,
-                'created_at' => $create
-            ]);
-            $attendance->exit_ip = '151.235.124.236';
-            $attendance->exit_location = 'Exit location: '.$i;
-            $attendance->registered = 'yes';
-            $attendance->updated_at = $update;
-            $attendance->save();
-            $create->addDay();
-            $update->addDay();
-        }
+        // $create = Carbon::create(2020, 8, 17, 10, 00, 23, 'Asia/Kolkata');
+        // $update = Carbon::create(2020, 8, 17, 17, 00, 23, 'Asia/Kolkata');
+        // for ($i=0; $i < 6; $i++) { 
+        //     $attendance = Attendance::create([
+        //         'employee_id' => $employee->id,
+        //         'entry_ip' => '123.156.125.123',
+        //         'entry_location' => 'Kanakpur: '.$i,
+        //         'created_at' => $create
+        //     ]);
+        //     $attendance->exit_ip = '151.235.124.236';
+        //     $attendance->exit_location = 'Exit location: '.$i;
+        //     $attendance->registered = 'yes';
+        //     $attendance->updated_at = $update;
+        //     $attendance->save();
+        //     $create->addDay();
+        //     $update->addDay();
+        // }
     }
 }
