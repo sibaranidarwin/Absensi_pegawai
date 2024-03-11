@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 10, 2024 at 08:07 PM
+-- Generation Time: Mar 11, 2024 at 09:36 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -41,13 +41,6 @@ CREATE TABLE `attendances` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `attendances`
---
-
-INSERT INTO `attendances` (`id`, `employee_id`, `entry_ip`, `entry_location`, `exit_ip`, `exit_location`, `registered`, `time`, `created_at`, `updated_at`) VALUES
-(1, 1, '127.0.0.1', 'Tiara Hotel & Convention Centre, Jalan Imam Bonjol, Hamdan, Aur, Medan Maimun, Kota Medan, Sumatera Utara, Sumatera, 20152, Indonesia', NULL, NULL, NULL, '02', '2024-03-10 19:06:10', '2024-03-10 19:06:10');
-
 -- --------------------------------------------------------
 
 --
@@ -66,7 +59,7 @@ CREATE TABLE `departments` (
 --
 
 INSERT INTO `departments` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Pegawai', '2024-03-10 19:04:35', '2024-03-10 19:04:35');
+(1, 'Content Creator', '2024-03-11 09:35:58', '2024-03-11 09:35:58');
 
 -- --------------------------------------------------------
 
@@ -84,7 +77,7 @@ CREATE TABLE `employees` (
   `desg` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `department_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `join_date` datetime NOT NULL,
-  `salary` double(8,2) NOT NULL,
+  `salary` bigint(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `photo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user.png'
@@ -95,7 +88,7 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`id`, `user_id`, `first_name`, `last_name`, `dob`, `sex`, `desg`, `department_id`, `join_date`, `salary`, `created_at`, `updated_at`, `photo`) VALUES
-(1, 2, 'Timoty ', 'Henan', '1997-09-15 00:00:00', 'Male', 'Staff', '1', '2020-01-15 00:00:00', 100000.00, '2024-03-10 19:04:35', '2024-03-10 19:04:35', 'user.png');
+(1, 2, 'Timoty ', 'Henan', '1997-09-15 00:00:00', 'Male', 'Staff', '1', '2020-01-15 00:00:00', 1000000, '2024-03-11 09:35:58', '2024-03-11 09:35:58', 'user.png');
 
 -- --------------------------------------------------------
 
@@ -163,13 +156,6 @@ CREATE TABLE `leaves` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `leaves`
---
-
-INSERT INTO `leaves` (`id`, `employee_id`, `reason`, `description`, `half_day`, `start_date`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Sakit', 'ya', 'no', '2024-03-12 00:00:00', '2024-03-13 00:00:00', 'declined', '2024-03-10 19:25:28', '2024-03-10 19:59:58');
 
 -- --------------------------------------------------------
 
@@ -250,8 +236,8 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '2024-03-10 19:04:35', '2024-03-10 19:04:35'),
-(2, 'employee', '2024-03-10 19:04:35', '2024-03-10 19:04:35');
+(1, 'admin', '2024-03-11 09:35:58', '2024-03-11 09:35:58'),
+(2, 'employee', '2024-03-11 09:35:58', '2024-03-11 09:35:58');
 
 -- --------------------------------------------------------
 
@@ -297,8 +283,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Administrator', 'admin@gmail.com', NULL, '$2y$10$zzMa3YNJQj4hGXFCj.cQyuJNBaF8gCP9hK2WkapBiLO9rQbsCT33S', NULL, '2024-03-10 19:04:35', '2024-03-10 19:04:35'),
-(2, 'Timothy Henan', 'henan@gmail.com', NULL, '$2y$10$Px/05BDxluMU1JJHu3exZeV6iF2EYnqvpqJPjuvJW/XLju5sKHeLO', NULL, '2024-03-10 19:04:35', '2024-03-10 19:04:35');
+(1, 'Administrator', 'admin@gmail.com', NULL, '$2y$10$VOsRvWSRKX7ZiATJuBN/y.Hf4iwzbT4enXHnPDeB14NCzXGbG4ZkG', NULL, '2024-03-11 09:35:58', '2024-03-11 09:35:58'),
+(2, 'Timothy Henan', 'henan@gmail.com', NULL, '$2y$10$RFK3W.pTzxD/sTECbAhX2O1bkhPBMUL8gUP.KfR6EDo6/9mtQTS7S', NULL, '2024-03-11 09:35:58', '2024-03-11 09:35:58');
 
 --
 -- Indexes for dumped tables
@@ -393,7 +379,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendances`
 --
 ALTER TABLE `attendances`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `departments`
@@ -429,7 +415,7 @@ ALTER TABLE `holidays`
 -- AUTO_INCREMENT for table `leaves`
 --
 ALTER TABLE `leaves`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
