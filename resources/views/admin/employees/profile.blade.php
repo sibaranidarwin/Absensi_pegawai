@@ -78,7 +78,7 @@
                             </tr>
                             <tr>
                                 <td>Gaji</td>
-                                <td>₹ {{ $employee->salary }}</td>
+                                <td>Rp {{ number_format($employee->salary, 0, ',', '.') }}</td>
                             </tr>
                         </table>
                     </div>

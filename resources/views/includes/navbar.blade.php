@@ -17,8 +17,8 @@
         <li class="nav-item dropdown user user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 @if (Auth::user()->employee)
-                <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image">
-                {{-- <img src="/storage/{{ Auth::user()->employee->photo }}" class="user-image img-circle elevation-2 alt="User Image"> --}}
+                {{-- <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image"> --}}
+                <img src="/storage/{{ Auth::user()->employee->photo }}" class="user-image img-circle elevation-2 alt="User Image">
                 @else
                 <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image">
                 @endif

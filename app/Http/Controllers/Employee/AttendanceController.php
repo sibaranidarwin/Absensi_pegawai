@@ -85,9 +85,9 @@ class AttendanceController extends Controller
 
     // Simpan data record absensi
     public function store(Request $request, $employee_id) {
-        $latitude = 3.580552; 
-        $longitude = 98.675666;
-       
+        $latitude = 3.572616921721103; 
+        $longitude = 98.67712838465745; 
+
         $attendance = new Attendance([
             'employee_id' => $employee_id,
             'entry_ip' => $request->ip(),
@@ -128,8 +128,8 @@ class AttendanceController extends Controller
     
     // Hapus data record absensi
     public function update(Request $request, $attendance_id) {
-        $latitude = 3.580552; 
-        $longitude = 98.675666;
+        $latitude = 3.572616921721103; 
+        $longitude = 98.67712838465745; 
         
         $attendance = Attendance::findOrFail($attendance_id);
         $attendance->exit_ip = $request->ip();
