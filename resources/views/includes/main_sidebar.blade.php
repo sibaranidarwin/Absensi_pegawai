@@ -15,7 +15,7 @@
             class="brand-image img-circle elevation-3"
             style="opacity: 0.8;"
         /> --}}
-        <span class="brand-text font-weight-light ">Website Absensi</span>
+        <span class="brand-text font-weight-light ">Absence Here!</span>
     </a>
 
     <!-- Sidebar -->
@@ -23,16 +23,16 @@
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 @if (Auth::user()->employee)
-                <img
+                {{-- <img
                     src="/dist/img/firyanul.png"
                     class="img-circle elevation-2"
                     alt="User Image"
-                />
-                {{-- <img
+                /> --}}
+                <img
                     src="/storage/{{ Auth::user()->employee->photo }}"
                     class="img-circle elevation-2"
                     alt="User Image"
-                /> --}}
+                />
                 @else
                 <img
                     src="/dist/img/firyanul.png"

@@ -55,7 +55,7 @@ class UsersTableSeeder extends Seeder
             'desg' => 'Staff',
             'department_id' => '1',
             'join_date' => $join->format('Y-m-d'),
-            'salary' => 10520.75
+            'salary' => 1000000
         ]);
 
         Department::create(['name' => 'Pegawai']);

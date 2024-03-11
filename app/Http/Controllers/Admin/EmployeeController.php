@@ -128,9 +128,6 @@ class EmployeeController extends Controller
     }
     
     
-    
-    
-    
 
     public function attendanceByDate($date) {
         $employees = DB::table('employees')->select('id', 'first_name', 'last_name', 'desg', 'department_id')->get();
