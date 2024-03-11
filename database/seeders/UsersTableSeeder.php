@@ -58,7 +58,7 @@ class UsersTableSeeder extends Seeder
             'salary' => 1000000
         ]);
 
-        Department::create(['name' => 'Pegawai']);
+        Department::create(['name' => 'Content Creator']);
         
         // Attendance seeder
         // $create = Carbon::create(2020, 8, 17, 10, 00, 23, 'Asia/Kolkata');
