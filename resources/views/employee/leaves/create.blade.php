@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label for="">Alasan</label>
                                     <!-- <input type="text" name="reason" value="{{ old('reason') }}" class="form-control"> -->
-                                    <select class="form-control" name="reason">
+                                    <select class="form-control" name="reason" required> 
                                         <option value="Sakit" selected>Sakit</option>
                                         <option value="Cuti">Cuti</option>
                                     </select>
@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Deskripsi</label>
-                                    <textarea name="description" class="form-control" >{{ old('description') }}</textarea>
+                                    <textarea name="description" class="form-control" required>{{ old('description') }}</textarea>
                                     @error('description')
                                     <div class="text-danger">
                                         {{ $message }}
@@ -67,21 +67,21 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Lebih dari Sehari ?</label>
-                                    <select class="form-control" name="multiple-days" onchange="showDate()">
+                                    <select class="form-control" name="multiple-days" onchange="showDate()" required>
                                         <option value="yes" selected>Ya</option>
                                         <option value="no">Tidak</option>
                                     </select>
                                 </div>
                                 <div class="form-group hide-input" id="half-day">
                                     <label>Setengah Jam Kerja</label>
-                                    <select class="form-control" name="half-day">
+                                    <select class="form-control" name="half-day" required>
                                         <option value="no">Tidak</option>
                                         <option value="yes">Ya</option>
                                     </select>
                                 </div>
                                 <div class="form-group" id="range-group">
                                     <label for="">Rentang Tanggal: </label>
-                                    <input type="text" name="date_range" id="date_range" class="form-control">
+                                    <input type="text" name="date_range" id="date_range" class="form-control" required>
                                     @error('date_range')
                                     <div class="text-danger">
                                         {{ $message }}
@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="form-group hide-input" id="date-group">
                                     <label for="">Seleksi Data </label>
-                                    <input type="text" name="date" id="date" class="form-control">
+                                    <input type="text" name="date" id="date" class="form-control" required>
                                 </div>
                             </div>
                             <div class="card-footer">
