@@ -46,7 +46,7 @@
                             <fieldset>
                                 <div class="form-group">
                                     <label for="">Nama Awal</label>
-                                    <input type="text" name="first_name" value="{{ old('first_name') }}" class="form-control">
+                                    <input type="text" name="first_name" value="{{ old('first_name') }}" class="form-control" required>
                                     @error('first_name')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Nama Akhir</label>
-                                    <input type="text" name="last_name" value="{{ old('last_name') }}" class="form-control">
+                                    <input type="text" name="last_name" value="{{ old('last_name') }}" class="form-control" required>
                                     @error('last_name')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Email</label>
-                                    <input type="text" name="email" value="{{ old('email') }}" class="form-control">
+                                    <input type="text" name="email" value="{{ old('email') }}" class="form-control" required>
                                     @error('email')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -73,11 +73,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="dob">Tanggal Lahir</label>
-                                    <input type="text" name="dob" id="dob" class="form-control">
+                                    <input type="text" name="dob" id="dob" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Jenis Kelamin</label>
-                                    <select name="sex" class="form-control">
+                                    <select name="sex" class="form-control" required>
                                         <option hidden disabled selected value> -- Pilih Opsi -- </option>
                                         @if (old('sex') == 'Male')
                                         <option value="Male" selected>Laki-Laki</option>
@@ -98,12 +98,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="join_date">Tanggal Bergabung</label>
-                                    <input type="text" name="join_date" id="join_date" class="form-control">
+                                    <input type="text" name="join_date" id="join_date" class="form-control" required>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="">Jabatan</label>
-                                        <select name="desg" class="form-control">
+                                        <select name="desg" class="form-control" required>
                                             <option hidden disabled selected value> -- Pilih Opsi -- </option>
                                             @foreach ($desgs as $desg)
                                                 <option value="{{ $desg }}"
@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">Department</label>
-                                        <select name="department_id" class="form-control">
+                                        <select name="department_id" class="form-control" required>
                                             <option hidden disabled selected value> -- Pilih Opsi -- </option>
                                             @foreach ($departments as $department)
                                                 <option value="{{ $department->id }}"
@@ -144,7 +144,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Gaji</label>
-                                    <input type="text" name="salary" value="{{ old('salary') }}" class="form-control">
+                                    <input type="text" name="salary" value="{{ old('salary') }}" class="form-control" required>
                                     @error('salary')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Foto</label>
-                                    <input type="file" name="photo" class="form-control-file">
+                                    <input type="file" name="photo" class="form-control-file" required>
                                     @error('photo')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -162,7 +162,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Password</label>
-                                    <input type="password" name="password" value="{{ old('password') }}" class="form-control">
+                                    <input type="password" name="password" value="{{ old('password') }}" class="form-control" required>
                                     @error('password')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -171,7 +171,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Konfirmasi Password</label>
-                                    <input type="password" name="password_confirmation" value="{{ old('password_confirmation') }}" class="form-control">
+                                    <input type="password" name="password_confirmation" value="{{ old('password_confirmation') }}" class="form-control" required>
                                     @error('password_confirmation')
                                         <div class="text-danger">
                                             {{ $message }}
