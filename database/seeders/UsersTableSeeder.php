@@ -23,9 +23,9 @@ class UsersTableSeeder extends Seeder
     {
         User::truncate();
         DB::table('role_user')->truncate();
-        DB::table('employees')->truncate();
+        DB::table('personnel_employee')->truncate();
         DB::table('departments')->truncate();
-        DB::table('attendances')->truncate();
+        DB::table('att_attemployee')->truncate();
         $employeeRole = Role::where('name', 'employee')->first();
         $adminRole =  Role::where('name', 'admin')->first();
 
@@ -35,28 +35,28 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('adminadmin')
         ]);
 
-        $employee = User::create([
-            'name' => 'Timothy Henan',
-            'email' => 'henan@gmail.com',
-            'password' => Hash::make('timotii')
-        ]);
+        // $employee = User::create([
+        //     'name' => 'Timothy Henan',
+        //     'email' => 'henan@gmail.com',
+        //     'password' => Hash::make('timotii')
+        // ]);
 
         // 
-        $employee->roles()->attach($employeeRole);
-        $dob = new DateTime('1997-09-15');
-        $join = new DateTime('2020-01-15');
+        // $employee->roles()->attach($employeeRole);
+        // $dob = new DateTime('1997-09-15');
+        // $join = new DateTime('2020-01-15');
         $admin->roles()->attach($adminRole);
-        $employee = Employee::create([
-            'user_id' => $employee->id,
-            'first_name' => 'Timoty ',
-            'last_name' => 'Henan',
-            'dob' => $dob->format('Y-m-d'),
-            'sex' => 'Male',
-            'desg' => 'Staff',
-            'department_id' => '1',
-            'join_date' => $join->format('Y-m-d'),
-            'salary' => 1000000
-        ]);
+        // $employee = Employee::create([
+        //     'user_id' => $employee->id,
+        //     'first_name' => 'Timoty ',
+        //     'last_name' => 'Henan',
+        //     'dob' => $dob->format('Y-m-d'),
+        //     'sex' => 'Male',
+        //     'desg' => 'Staff',
+        //     'department_id' => '1',
+        //     'join_date' => $join->format('Y-m-d'),
+        //     'salary' => 1000000
+        // ]);
 
         Department::create(['name' => 'Content Creator']);
         

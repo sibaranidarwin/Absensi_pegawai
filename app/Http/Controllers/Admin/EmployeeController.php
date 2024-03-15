@@ -20,8 +20,9 @@ class EmployeeController extends Controller
 {
     public function index() {
         $data = [
-            'employees' => Employee::all()
+            'personnel_employee' => DB::table('personnel_employee')->get()
         ];
+        // dd($data);
         return view('admin.employees.index')->with($data);
     }
     public function create() {
@@ -143,17 +144,13 @@ class EmployeeController extends Controller
     }
 
     public function destroy($employee_id) {
-        $employee = Employee::findOrFail($employee_id);
-        $user = User::findOrFail($employee->user_id);
-        // detaches all the roles
-        DB::table('leaves')->where('employee_id', '=', $employee_id)->delete();
-        DB::table('attendances')->where('employee_id', '=', $employee_id)->delete();
-        DB::table('expenses')->where('employee_id', '=', $employee_id)->delete();
-        $employee->delete();
-        $user->roles()->detach();
-        // deletes the users
-        $user->delete();
-        request()->session()->flash('success', 'Karyawan berhasil dihapus!');
+        $employee = DB::table('personnel_employee')->where('id', $employee_id)->first();
+        if ($employee) {
+            DB::table('personnel_employee')->where('id', $employee_id)->delete();
+            request()->session()->flash('success', 'Karyawan berhasil dihapus!');
+        } else {
+            request()->session()->flash('warning', 'Karyawan tidak ditemukan!');
+        }        
         return back();
     }
 
