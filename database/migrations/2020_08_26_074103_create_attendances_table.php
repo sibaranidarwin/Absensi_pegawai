@@ -13,15 +13,21 @@ class CreateAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('att_attemployee', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('employee_id');
-            $table->string('entry_ip');
-            $table->string('entry_location');
-            $table->string('exit_ip')->nullable();
-            $table->string('exit_location')->nullable();
-            $table->string('registered')->nullable();
-            $table->string('time')->nullable();
+            $table->datetime('create_time');
+            $table->string('create_user');
+            $table->string('change_time');
+            $table->string('change_user')->nullable();
+            $table->string('status')->nullable();
+            $table->string('enable_attendance')->nullable();
+            $table->string('enable_schedule')->nullable();
+            $table->string('enable_overtime')->nullable();
+            $table->string('enable_holiday')->nullable();
+            $table->string('emp_id')->nullable();
+            $table->string('group_id')->nullable();
+            $table->string('enable_compensatory')->nullable();
+            $table->string('ip_address')->nullable();
             $table->timestamps();
         });
     }

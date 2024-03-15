@@ -130,7 +130,7 @@
                                 <td>
                                     <?php 
                                     // Membuat koneksi ke database
-                                    $conn = mysqli_connect("localhost", "root", "", "absensi");
+                                    $conn = mysqli_connect("localhost", "root", "", "absen");
                                 
                                     // Memeriksa apakah koneksi berhasil
                                     if ($conn) {

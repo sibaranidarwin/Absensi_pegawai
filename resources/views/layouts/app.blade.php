@@ -83,14 +83,14 @@
                 @yield('content')
                 </div>
                 <footer class="main-footer">
-                    <strong
+                    {{-- <strong
                         >&copy; 7 Maret 2024
                         </strong
                     >
                     Maaf jika masih banyak kekurangan.
                     <div class="float-right d-none d-sm-inline-block">
                         <b>Versi</b> 1.0.0
-                    </div>
+                    </div> --}}
                 </footer>
                 <!-- Control Sidebar -->
                 <aside class="control-sidebar control-sidebar-dark">

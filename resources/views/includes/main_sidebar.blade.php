@@ -16,19 +16,19 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                @if (Auth::user()->employee)
-                <img
+                {{-- @if (Auth::user()->employee) --}}
+                {{-- <img
                     src="/storage/{{ Auth::user()->employee->photo }}"
                     class="img-circle elevation-2"
                     alt="User Image"
                 />
-                @else
+                @else --}}
                 <img
                     src="/dist/img/firyanul.png"
                     class="img-circle elevation-2"
                     alt="User Image"
                 />
-                @endif
+                {{-- @endif --}}
                 
             </div>
             <div class="info">

@@ -41,7 +41,7 @@
                         
                     </div>
                     <div class="card-body">
-                        @if ($employees->count())
+                        @if ($personnel_employee->count())
                         <table class="table table-bordered table-hover" id="dataTable">
                             <thead>
                                 <tr>
@@ -50,21 +50,37 @@
                                     <th>Department</th>
                                     <th>Jabatan</th>
                                     <th>Tanggal Bergabung</th>
-                                    <th>Gaji</th>
+                                    {{-- <th>Gaji</th> --}}
                                     <th class="none">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($employees as $index => $employee)
+                                @foreach ($personnel_employee as $index => $employee)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $employee->first_name.' '.$employee->last_name }}</td>
-                                    <td>{{ $employee->department->name }}</td>
-                                    <td>{{ $employee->desg }}</td>
-                                    <td>{{ $employee->join_date->format('d M, Y') }}</td>
-                                    <td>Rp {{ number_format($employee->salary, 0, ',', '.') }}</td>
+                                    <td>{{ $employee->first_name}}</td>
                                     <td>
-                                        <a href="{{ route('admin.employees.profile', $employee->id) }}" class="btn btn-flat btn-info">Lihat Profil</a>
+                                        @if($employee->department_id == 0)
+                                                Departement
+                                            @elseif($employee->department_id == 1)
+                                                Departement
+                                            @else
+                                                Unknown
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($employee->app_role == 1)
+                                            Karyawan
+                                        @elseif($employee->app_role == 0)
+                                            Manager
+                                        @else
+                                            Role Unknown
+                                        @endif
+                                    </td>                                 
+                                    {{-- <td></td> --}}
+                                    <td>{{ $employee->hire_date}}</td>
+                                    {{-- <td></td> --}}
+                                    <td>
                                         <button 
                                         class="btn btn-flat btn-danger"
                                         data-toggle="modal" 
@@ -75,7 +91,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                            @for ($i = 1; $i < $employees->count()+1; $i++)
+                            @for ($i = 1; $i < $personnel_employee->count()+1; $i++)
                                 <!-- Modal -->
                                 <div class="modal fade" id="deleteModalCenter{{ $i }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle1{{ $i }}" aria-hidden="true">
                                     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
@@ -89,7 +105,7 @@
                                                     <button type="button" class="btn flat btn-secondary" data-dismiss="modal">Tidak</button>
                                                     
                                                     <form 
-                                                    action="{{ route('admin.employees.delete', $employees->get($i-1)->id) }}"
+                                                    action="{{ route('admin.employees.delete', $personnel_employee->get($i-1)->id) }}"
                                                     method="POST"
                                                     >
                                                     @csrf

@@ -16,42 +16,42 @@
 
         <li class="nav-item dropdown user user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                @if (Auth::user()->employee)
-                <img src="/storage/{{ Auth::user()->employee->photo }}" class="user-image img-circle elevation-2 alt="User Image">
-                @else
+                {{-- @if (Auth::user()->employee) --}}
+                {{-- <img src="/storage/{{ Auth::user()->employee->photo }}" class="user-image img-circle elevation-2 alt="User Image"> --}}
+                {{-- @else --}}
                 <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image">
-                @endif
+                {{-- @endif --}}
                 <span class="hidden-xs">{{ Auth::user()->name }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <li class="user-header bg-primary">
-                @if (Auth::user()->employee)
-                <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image">
-                @else
+                {{-- @if (Auth::user()->employee) --}}
+                {{-- <img src="/dist/img/firyanul.png" class="user-image img-circle elevation-2" alt="User Image"> --}}
+                {{-- @else --}}
                 <img src="/dist/img/firyanul.png" class="img-circle elevation-2" alt="User Image">
-                @endif
+                {{-- @endif --}}
         
                 <p>
                     {{ Auth::user()->name }}
-                    @if ( Auth::user()->employee )
-                    - {{ Auth::user()->employee->desg }}, {{ Auth::user()->employee->department->name }}
-                    @endif 
+                    {{-- @if ( Auth::user()->employee ) --}}
+                    {{-- - {{ Auth::user()->employee->desg }}, {{ Auth::user()->employee->department->name }} --}}
+                    {{-- @endif  --}}
                 </p>
                 </li>
                 <!-- Menu Body -->
                 <li class="user-body text-center">
-                    @if ( Auth::user()->employee )
-                    <small>Member since {{ Auth::user()->employee->join_date->format('d M, Y') }}</small>
-                    @endif 
+                    {{-- @if ( Auth::user()->employee ) --}}
+                    {{-- <small>Member since {{ Auth::user()->employee->join_date->format('d M, Y') }}</small> --}}
+                    {{-- @endif  --}}
                 <!-- /.row -->
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
                 <div class="pull-left">
-                    @if ( Auth::user()->employee )
-                    <a href="{{ route('employee.profile') }}" class="btn btn-default btn-flat">Profile</a>
-                    @else
-                    @endif
+                    {{-- @if ( Auth::user()->employee ) --}}
+                    {{-- <a href="{{ route('employee.profile') }}" class="btn btn-default btn-flat">Profile</a> --}}
+                    {{-- @else --}}
+                    {{-- @endif --}}
                 </div>
                 <div class="pull-right">
                     <a href="{{ route('logout') }}" 
