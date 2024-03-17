@@ -120,39 +120,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        @for ($i = 1; $i < $personnel_employee->count()+1; $i++)
-                                <!-- Modal -->
-                                @if($personnel_employee->get($i-1)->attendanceToday)
-                                <div class="modal fade" id="deleteModalCenter{{ $personnel_employee->get($i-1)->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle1{{ $personnel_employee->get($i-1)->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="card card-danger">
-                                                <div class="card-header">
-                                                    <h5 style="text-align: center !important">Yakin ingin dihapus?</h5>
-                                                </div>
-                                                <div class="card-body text-center d-flex" style="justify-content: center">
-                                                    
-                                                    <button type="button" class="btn flat btn-secondary" data-dismiss="modal">Tidak</button>
-                                                    
-                                                    <form 
-                                                    action="{{ route('admin.employees.attendance.delete', $personnel_employee->get($i-1)->id) }}"
-                                                    method="POST"
-                                                    >
-                                                    @csrf
-                                                    @method('DELETE')
-                                                        <button type="submit" class="btn flat btn-danger ml-1">Ya</button>
-                                                    </form>
-                                                </div>
-                                                <div class="card-footer text-center">
-                                                    <small>Aksi tidak tersedia</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.modal -->
-                                @endif
-                            @endfor
                         @else
                         <div class="alert alert-info text-center" style="width:50%; margin: 0 auto">
                             <h4>Belum Ada Riwayat</h4>
