@@ -50,9 +50,8 @@ class AdminController extends Controller
     public function attendanceByDate($date) {
         $employees = DB::table('personnel_employee')->select('id', 'first_name', 'last_name', 'create_time', 'status' , 'enroll_sn', 'update_time', 'department_id')->get();
         $attendances = DB::table('att_attemployee')->get()->filter(function($attendance, $key) use ($date){
-            return $attendance->created_at;
+            return $attendance->create_time;
         });
-
         return $employees->map(function($employee, $key) use($attendances) {
             $attendance = DB::table('att_attemployee')->pluck('create_time')->first();
             $employee->attendanceToday = $attendance;
