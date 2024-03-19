@@ -108,45 +108,41 @@ class EmployeeController extends Controller
             $employees = $this->attendanceByDate(Carbon::now());
             $today = Carbon::now()->format('Y-m-d');
             $employees = $employees->filter(function ($employee) use ($today) {
-                return substr($employee->create_time, 0, 10) === $today; });
+                return substr($employee->punch_time, 0, 10) === $today; });
 
         }
 
-        $data['personnel_employee'] = $employees;
+        $data['iclock_transaction'] = $employees;
                     
         return view('admin.employees.attendance')->with($data);
     }
     
     public function attendanceByDateRange($startDate, $endDate) {
-        $attendances = DB::table('att_attemployee')
-        ->whereBetween('create_time', [$startDate, $endDate])
-        ->get();    
-        $employees = collect();
-    
-        foreach ($attendances as $attendance) {
-            $employee = DB::table('personnel_employee')->select('id', 'first_name', 'last_name', 'create_time', 'status' , 'enroll_sn', 'update_time', 'department_id')->find($attendance->emp_id);
-            if ($employee) {
-                $employee->attendanceToday = $attendance;
-                $employees->push($employee);
-            }
-        }
-        return $employees;
+        $attendances = DB::table('iclock_transaction')
+            ->select('iclock_transaction.*', 'personnel_employee.first_name', 'personnel_employee.last_name', 'personnel_employee.department_id')
+            ->join('personnel_employee', 'iclock_transaction.emp_id', '=', 'personnel_employee.id')
+            ->whereBetween('iclock_transaction.punch_time', [$startDate, $endDate])
+            ->get();
+        return $attendances;
     }
+    
     
     
 
     public function attendanceByDate($date) {
-        $employees = DB::table('personnel_employee')->select('id', 'first_name', 'last_name', 'create_time', 'status' , 'enroll_sn', 'update_time', 'department_id')->get();
-        $attendances = DB::table('att_attemployee')->get()->filter(function($attendance, $key) use ($date){
-            return $attendance->create_time;
-        });
-        return $employees->map(function($employee, $key) use($attendances) {
-            $attendance = DB::table('att_attemployee')->pluck('create_time')->first();
-            $employee->attendanceToday = $attendance;
-       
-            return $employee;
+        $attendances = DB::table('iclock_transaction')
+            ->select('iclock_transaction.id', 'iclock_transaction.emp_id', 'iclock_transaction.sync_status', 'iclock_transaction.punch_time', 'iclock_transaction.punch_state', 'personnel_employee.first_name', 'personnel_employee.department_id')
+            ->join('personnel_employee', 'iclock_transaction.emp_id', '=', 'personnel_employee.id')
+            ->whereDate('iclock_transaction.punch_time', $date)
+            ->get();
+    
+        return $attendances->map(function($attendance) {
+            // Menambahkan properti attendanceToday ke setiap entri employee
+            $attendance->attendanceToday = $attendance->punch_time;
+            return $attendance;
         });
     }
+    
 
     public function destroy($employee_id) {
         $employee = DB::table('personnel_employee')->where('id', $employee_id)->first();
