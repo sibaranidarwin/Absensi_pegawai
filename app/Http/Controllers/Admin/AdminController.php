@@ -17,33 +17,18 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
     {
-        public function index(Request $request) {
-            $data = [
-                'date' => null
-            ];
-            
-            // dd($data);
-            if($request->has('date')) {
-                $dateRange = explode(' - ', $request->date);
-                $startDate = Carbon::createFromFormat('d-m-Y', $dateRange[0])->startOfDay();
-                $endDate = Carbon::createFromFormat('d-m-Y', $dateRange[1])->endOfDay();
-                
-                $employees = $this->attendanceByDateRange($startDate, $endDate);
-                $data['date'] = $startDate->format('d M, Y') . ' - ' . $endDate->format('d M, Y');
-            } else {
-                $employees = $this->attendanceByDate(Carbon::now());
-                $today = Carbon::now()->format('Y-m-d');
-                $employees = $employees->filter(function ($employee) use ($today) {
-                    return substr($employee->create_time, 0, 10) === $today; });
+        public function index() {
+            $currentDate = Carbon::now()->toDateString();
 
-            }
-            
+            $transaction = DB::table('att_attemployee')
+                ->join('personnel_employee', 'att_attemployee.emp_id', '=', 'personnel_employee.id')
+                ->select('att_attemployee.*', 'personnel_employee.first_name')
+                ->whereDate('att_attemployee.create_time', $currentDate)
+                ->get();
 
-            $data['personnel_employee'] = $employees;
-            
-                
-            // dd($data);
-            return view('admin.index')->with($data);
+            // dd($transaction);
+
+            return view('admin.index')->with('transactions' ,$transaction);
         }
 
     

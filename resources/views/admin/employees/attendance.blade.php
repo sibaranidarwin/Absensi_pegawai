@@ -9,13 +9,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Absensi</h1>
+                <h1 class="m-0 text-dark">Dashboard</h1>
             </div>
             <!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('admin.index') }}">Dashboard Admin</a>
+                        <a href="{{ route('admin.employees.attendance') }}">Dashboard Admin</a>
                     </li>
                     <li class="breadcrumb-item active">
                         Absensi
@@ -70,144 +70,56 @@
                         
                     </div>
                     <div class="card-body">
-                        @if ($employees->count())
+                        @if ($personnel_employee->count())
                         <table class="table table-bordered table-hover" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Riwayat Database</th>
-                                    <th class="none">Riwayat Awal Absensi</th>
-                                    {{-- <th hidden>Tanggal Hadir</th> --}}
-                                    <th>Riwayat Absensi</th>
-                                    <th class="none">Riwayat Akhir Absensi</th>
-                                    <th>Lokasi</th>
-                                    <th>Jabatan</th>
-                                    <th class="none">Aksi</th>
+                                    <th>Employee ID</th>
+                                    <th>First Name</th>
+                                    <th>Departement</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Punch State</th>
+                                    <th>Area Name</th>
+                                    <th>Serial Number</th>
+                                    <th>Device Number</th>
+                                    <th>Upload Foto</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($employees as $index => $employee)
+                                @foreach ($personnel_employee as $index => $employee)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $employee->first_name.' '.$employee->last_name }}</td>
-                                    @if($employee->attendanceToday)
-                                    <td><h6 class="text-center"><span class="badge badge-pill badge-success">Terekam</span></h6></td>
+                                    <td>{{ $employee->id }}</td>
+                                    <td>{{ $employee->first_name}}</td>
                                     <td>
-                                        Terekam sejak pukul {{ $employee->attendanceToday->created_at->format('d M Y H:i:s') }} dari {{ $employee->attendanceToday->entry_location}} dengan alamat IP {{ $employee->attendanceToday->entry_ip}}
-                                    </td>
-                                    {{-- <td hidden>
-                                        {{ $employee->attendanceToday->created_at->format('d M, Y')}}
-                                    </td> --}}
-                                    @php
-                                        // Convert created_at time to timestamp
-                                        $entryTime = strtotime($employee->attendanceToday->created_at);
-                                        // Convert the current time to the correct format
-                                        $currentTime = strtotime(date('h:i A', $entryTime));
-
-                                        // Define valid time ranges
-                                        $validStartTime = strtotime('07:45 AM');
-                                        $validEndTime = strtotime('08:15 AM');
-                                        $endOfWorkTime = strtotime('05:00 PM');
-                                    @endphp
-
-                                    @if ($currentTime >= $validStartTime && $currentTime <= $validEndTime)
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-success">Hadir Tepat Waktu</span></h6></td>
-                                    @elseif ($currentTime > $validEndTime && $currentTime <= $endOfWorkTime)
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-warning">Hadir Terlambat</span></h6></td>
-                                    @else
-                                        <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Absensi Tidak Valid</span></h6></td>
-                                    @endif
-                                    <td>
-                                        Terekam sejak {{ $employee->attendanceToday->updated_at->format('H:i:s') }} dari {{ $employee->attendanceToday->exit_location}} dengan alamat IP {{ $employee->attendanceToday->exit_ip}}
-                                    </td>
-                                @else
-                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                    <td><h6 class="text-center"><span class="badge badge-pill badge-danger">Belum Ada Riwayat</span></h6></td>
-                                @endif                                
-                                <td>
-                                    <?php 
-                                    // Membuat koneksi ke database
-                                    $conn = mysqli_connect("localhost", "root", "", "absen");
-                                
-                                    // Memeriksa apakah koneksi berhasil
-                                    if ($conn) {
-                                        // Menjalankan query untuk mengambil lokasi masuk
-                                        $result = mysqli_query($conn, "SELECT entry_location FROM attendances LIMIT 1");
-                                
-                                        // Memeriksa apakah query berhasil dijalankan
-                                        if (mysqli_num_rows($result) > 0) {
-                                            // Mengambil baris pertama dari hasil query
-                                            $row = mysqli_fetch_assoc($result);
-                                
-                                            // Memeriksa apakah lokasi masuk tidak kosong
-                                            if (!empty($row['entry_location'])) { 
-                                                echo $row['entry_location']; 
-                                            } else { 
-                                                echo " - ";
-                                            }
-                                        } else {
-                                            echo " - ";
-                                        }
-                                
-                                        // Menutup koneksi ke database
-                                        mysqli_close($conn);
-                                    } else {
-                                        echo "Koneksi ke database gagal";
-                                    }
-                                    ?>
-                                </td>
-                                    <td>{{ $employee->desg }}</td>
-                                    <td>
-                                        @if($employee->attendanceToday)
-                                        <button 
-                                        class="btn btn-flat btn-danger"
-                                        data-toggle="modal"
-                                        data-target="#deleteModalCenter{{ $employee->attendanceToday->id }}"
-                                        >Hapus Riwayat</button>
-                                        @else 
-                                        Aksi Tidak Tersedia
+                                    @if($employee->department_id == 0)
+                                            Departement
+                                        @elseif($employee->department_id == 1)
+                                            Departement
+                                        @else
+                                            Unknown
                                         @endif
                                     </td>
+                                    <td>{{ date('Y-m-d', strtotime($employee->create_time)) }}</td>
+                                    <td>{{ substr($employee->create_time, 11, 8) }}</td>
+                                    <td>
+                                        @if($employee->status == 0)
+                                            Check In
+                                        @elseif($employee->status == 1)
+                                            Check Out
+                                        @else
+                                            Unknown
+                                        @endif
+                                    </td>
+                                    <td>Medan</td>
+                                    <td>{{ $employee->enroll_sn}}</td>
+                                    <td>Auto add</td>
+                                    <td>{{ $employee->update_time}}</td>                       
+                                  
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        @for ($i = 1; $i < $employees->count()+1; $i++)
-                                <!-- Modal -->
-                                @if($employees->get($i-1)->attendanceToday)
-                                <div class="modal fade" id="deleteModalCenter{{ $employees->get($i-1)->attendanceToday->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle1{{ $employees->get($i-1)->attendanceToday->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="card card-danger">
-                                                <div class="card-header">
-                                                    <h5 style="text-align: center !important">Yakin ingin dihapus?</h5>
-                                                </div>
-                                                <div class="card-body text-center d-flex" style="justify-content: center">
-                                                    
-                                                    <button type="button" class="btn flat btn-secondary" data-dismiss="modal">Tidak</button>
-                                                    
-                                                    <form 
-                                                    action="{{ route('admin.employees.attendance.delete', $employees->get($i-1)->attendanceToday->id) }}"
-                                                    method="POST"
-                                                    >
-                                                    @csrf
-                                                    @method('DELETE')
-                                                        <button type="submit" class="btn flat btn-danger ml-1">Ya</button>
-                                                    </form>
-                                                </div>
-                                                <div class="card-footer text-center">
-                                                    <small>Aksi tidak tersedia</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.modal -->
-                                @endif
-                            @endfor
                         @else
                         <div class="alert alert-info text-center" style="width:50%; margin: 0 auto">
                             <h4>Belum Ada Riwayat</h4>
@@ -264,7 +176,7 @@
 
             // Kirim data ke server menggunakan AJAX
             $.ajax({
-                url: "{{ route('admin.employees.attendance') }}", // Ganti dengan URL tujuan Anda
+                url: "{{ route('admin.index') }}", // Ganti dengan URL tujuan Anda
                 method: "POST",
                 data: {
                     _token: '{{ csrf_token() }}',
