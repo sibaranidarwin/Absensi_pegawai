@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Dashboard</h1>
+                <h1 class="m-0 text-dark">Transaksi</h1>
             </div>
             <!-- /.col -->
             <div class="col-sm-6">
@@ -70,7 +70,7 @@
                         
                     </div>
                     <div class="card-body">
-                        @if ($personnel_employee->count())
+                        @if ($iclock_transaction->count())
                         <table class="table table-bordered table-hover" id="dataTable">
                             <thead>
                                 <tr>
@@ -80,14 +80,11 @@
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Punch State</th>
-                                    <th>Area Name</th>
-                                    <th>Serial Number</th>
-                                    <th>Device Number</th>
-                                    <th>Upload Foto</th>
+                                    <th>Tunggakan</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($personnel_employee as $index => $employee)
+                                @foreach ($iclock_transaction as $index => $employee)
                                 <tr>
                                     <td>{{ $employee->id }}</td>
                                     <td>{{ $employee->first_name}}</td>
@@ -100,22 +97,45 @@
                                             Unknown
                                         @endif
                                     </td>
-                                    <td>{{ date('Y-m-d', strtotime($employee->create_time)) }}</td>
-                                    <td>{{ substr($employee->create_time, 11, 8) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($employee->punch_time)) }}</td>
+                                    <td>{{ substr($employee->punch_time, 11, 8) }}</td>
                                     <td>
-                                        @if($employee->status == 0)
+                                        @if($employee->sync_status == 0)
                                             Check In
-                                        @elseif($employee->status == 1)
+                                        @elseif($employee->sync_status == 1)
                                             Check Out
                                         @else
                                             Unknown
                                         @endif
                                     </td>
-                                    <td>Medan</td>
-                                    <td>{{ $employee->enroll_sn}}</td>
-                                    <td>Auto add</td>
-                                    <td>{{ $employee->update_time}}</td>                       
-                                  
+                                    <td>
+                                        @php
+                                            $lateTime = Carbon\Carbon::createFromFormat('H:i:s', substr($employee->punch_time, 11, 8));
+                                            $lateTimeLimit1 = Carbon\Carbon::createFromFormat('H:i:s', '08:05:00');
+                                            $lateTimeLimit2 = Carbon\Carbon::createFromFormat('H:i:s', '08:10:00');
+                                            $halfDayLimit = Carbon\Carbon::createFromFormat('H:i:s', '12:00:00');
+                                        
+                                            $lateFine = 0;
+                                            $cutLeave = false;
+                                        
+                                            if ($lateTime->gt($halfDayLimit)) {
+                                                // Jika lewat dari setengah hari, potong cuti setengah hari
+                                                $cutLeave = true;
+                                            } else {
+                                                // Jika lewat dari pukul 8.05, tetapi masih di bawah atau sama dengan pukul 8.10, dikenakan denda 50k
+                                                // Jika lewat dari pukul 8.10, dikenakan denda 100k
+                                                if ($lateTime->gt($lateTimeLimit1) && $lateTime->lte($lateTimeLimit2)) {
+                                                    $lateFine = 50000;
+                                                } elseif ($lateTime->gt($lateTimeLimit2)) {
+                                                    $lateFine = 100000;
+                                                }
+                                            }
+                                        @endphp
+                                    
+                                        <!-- Menampilkan nilai yang sesuai berdasarkan kondisi -->
+                                        {{ $lateFine > 0 ? 'Denda: Rp ' . number_format($lateFine, 0, ',', '.') : '' }}
+                                        {{ $cutLeave ? 'Potong Cuti Setengah Hari' : '' }}
+                                    </td>                                  
                                 </tr>
                                 @endforeach
                             </tbody>

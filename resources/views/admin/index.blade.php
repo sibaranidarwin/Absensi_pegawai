@@ -32,21 +32,21 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <!-- Card Hijau -->
-            <div class="col-lg-4">
+               <!-- Card Merah -->
+               <div class="col-lg-4">
                 <div class="card bg-success">
                     <div class="card-body">
-                        Masuk = {{ $transactions->where('status', 0)->count() }}
+                        Absen = {{ $transactions->where('status', 0)->count() }}
                     </div>
                 </div>
             </div>
-            <!-- /.col -->
 
-            <!-- Card Merah -->
+
+            <!-- Card Hijau -->
             <div class="col-lg-4">
                 <div class="card bg-danger">
                     <div class="card-body">
-                        Absen = {{ $transactions->where('status', 1)->count() }}
+                        Masuk = {{ $transactions->where('status', 1)->count() }}
                     </div>
                 </div>
             </div>
@@ -81,9 +81,9 @@
                                     <td>{{ date('Y-m-d', strtotime($transaction->create_time)) }}</td>
                                     <td>{{ date('H:i:s', strtotime($transaction->create_time)) }}</td>
                                     <td>
-                                        @if($transaction->status == 0)
+                                        @if($transaction->status == 1)
                                             Check-in
-                                        @elseif($transaction->status == 1)
+                                        @elseif($transaction->status == 0)
                                             Check-out
                                         @else
                                             Status Tidak Dikenali
