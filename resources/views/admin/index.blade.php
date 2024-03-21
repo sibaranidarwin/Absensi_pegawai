@@ -74,7 +74,7 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <h1>uiyolkh</h1>
+                
                             <tbody>
                                 @foreach($transactions as $transaction)
                                 <tr>
