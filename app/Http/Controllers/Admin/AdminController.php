@@ -23,7 +23,7 @@ class AdminController extends Controller
             $transaction = DB::table('att_attemployee')
                 ->join('personnel_employee', 'att_attemployee.emp_id', '=', 'personnel_employee.id')
                 ->select('att_attemployee.*', 'personnel_employee.first_name')
-                ->whereDate('att_attemployee.create_time', $currentDate)
+                ->whereDate('att_attemployee.change_time', $currentDate)
                 ->get();
 
             // dd($transaction);
