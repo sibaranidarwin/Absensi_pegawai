@@ -74,23 +74,30 @@
                         <table class="table table-bordered table-hover" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>Employee ID</th>
+                                    <th>No</th>
                                     <th>First Name</th>
                                     <th>Departement</th>
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Punch State</th>
-                                    <th>Tunggakan</th>
+                                    <th>Denda</th>
+                                    <th>Keterangan</th>
+                                    <th>Alasan</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($iclock_transaction as $index => $employee)
-                                <tr>
-                                    <td>{{ $employee->id }}</td>
-                                    <td>{{ $employee->first_name}}</td>
+                                <tr data-row-id="{{ $employee->id }}">
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{ $employee->first_name }}</td>
                                     <td>
-                                    ({{ $employee->department_id}})
-            
+                                        @if($employee->department_id == 0)
+                                            Departement
+                                        @elseif($employee->department_id == 1)
+                                            Departement
+                                        @else
+                                            Unknown
+                                        @endif
                                     </td>
                                     <td>{{ date('Y-m-d', strtotime($employee->punch_time)) }}</td>
                                     <td>{{ substr($employee->punch_time, 11, 8) }}</td>
@@ -108,7 +115,8 @@
                                             $lateTime = Carbon\Carbon::createFromFormat('H:i:s', substr($employee->punch_time, 11, 8));
                                             $lateTimeLimit1 = Carbon\Carbon::createFromFormat('H:i:s', '08:05:00');
                                             $lateTimeLimit2 = Carbon\Carbon::createFromFormat('H:i:s', '08:10:00');
-                                            $halfDayLimit = Carbon\Carbon::createFromFormat('H:i:s', '12:00:00');
+                                            $halfDayLimit = Carbon\Carbon::createFromFormat('H:i:s', '10:00:00');
+                                            $eveningLimit = Carbon\Carbon::createFromFormat('H:i:s', '18:00:00');
                                         
                                             $lateFine = 0;
                                             $cutLeave = false;
@@ -125,16 +133,29 @@
                                                     $lateFine = 100000;
                                                 }
                                             }
+                                        
+                                            // Jika punch_time lebih dari pukul 18:00, tambahkan denda 100.000
+                                            if ($lateTime->gt($eveningLimit)) {
+                                                $lateFine += 100000;
+                                            }
                                         @endphp
-                                    
-                                        <!-- Menampilkan nilai yang sesuai berdasarkan kondisi -->
-                                        {{ $lateFine > 0 ? 'Denda: Rp ' . number_format($lateFine, 0, ',', '.') : '' }}
+                                        
+                                        {{ $lateFine > 0 ? 'Rp ' . number_format($lateFine, 0, ',', '.') : '' }}
                                         {{ $cutLeave ? 'Potong Cuti Setengah Hari' : '' }}
-                                    </td>                                  
+                                    </td>
+                                    <td>
+                                        <select name="status" class="form-control status-dropdown" data-row-id="{{ $employee->id }}">
+                                            <option value="">Pilih Status</option>
+                                            <option value="izin">Izin</option>
+                                            <option value="sakit">Sakit</option>
+                                            <option value="cuti">Cuti</option>
+                                        </select>
+                                    </td>
+                                    <td>Tidak Bisa Hadir</td>
                                 </tr>
                                 @endforeach
                             </tbody>
-                        </table>
+                        </table>                        
                         @else
                         <div class="alert alert-info text-center" style="width:50%; margin: 0 auto">
                             <h4>Belum Ada Riwayat</h4>
@@ -162,63 +183,94 @@
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        // Inisialisasi DataTables
-        var table = $('#dataTable').DataTable({
-            responsive: true,
-            autoWidth: false,
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    text: 'Export Excel',
-                    filename: 'Data Kehadiran', // Nama file Excel yang akan diunduh
-                    title: 'Data Kehadiran', // Judul tabel dalam Excel
-                    exportOptions: {}
-                },
-                'pdfHtml5',
-                'print'
-            ]
-        });
-
-        // Mengirimkan data form saat tombol submit ditekan
-        $(document).on('submit', '#attendanceForm', function(e) {
-            e.preventDefault(); // Menghentikan perilaku default form submit
-            
-            // Ambil rentang tanggal yang dipilih
-            var startDate = $('#date').data('daterangepicker').startDate.format('YYYY-MM-DD');
-            var endDate = $('#date').data('daterangepicker').endDate.format('YYYY-MM-DD');
-
-            // Kirim data ke server menggunakan AJAX
-            $.ajax({
-                url: "{{ route('admin.index') }}", // Ganti dengan URL tujuan Anda
-                method: "POST",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    start_date: startDate,
-                    end_date: endDate
-                },
-                success: function(response) {
-                    // Lakukan sesuatu setelah permintaan berhasil
-                    console.log("Data berhasil disimpan:", response);
-                },
-                error: function(xhr, status, error) {
-                    // Tangani kesalahan jika ada
-                    console.error("Terjadi kesalahan:", error);
+$(document).ready(function() {
+    var table = $('#dataTable').DataTable({
+        responsive: true,
+        autoWidth: false,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Export Excel',
+                filename: 'Data Kehadiran',
+                title: 'Data Kehadiran',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // Sesuaikan kolom yang akan diekspor
+                    format: {
+                        body: function (data, row, column, node) {
+                            if (column === 7) { // Kolom Keterangan
+                                // Return keterangan yang dipilih dari dropdown
+                                return $(node).find('.status-dropdown option:selected').text();
+                            } else if (column === 8) { // Kolom Alasan
+                                return 'Tidak Bisa Hadir'; // Kolom Alasan selalu sama
+                            } else {
+                                return data; // Return data as is for other columns
+                            }
+                        }
+                    }
                 }
-            });
-        });
-
-        // Menambahkan rentang tanggal
-        $('#date').daterangepicker({
-            "locale": {
-                "format": "DD-MM-YYYY"
             },
-            "ranges": {
-                'Rentang Kustom': [moment().startOf('day'), moment().endOf('day')]
+            'pdfHtml5',
+            'print'
+        ]
+    });
+
+    // Mengirimkan data form saat tombol submit ditekan
+    $(document).on('submit', '#attendanceForm', function(e) {
+        e.preventDefault(); // Menghentikan perilaku default form submit
+        
+        // Ambil rentang tanggal yang dipilih
+        var startDate = $('#date').data('daterangepicker').startDate.format('YYYY-MM-DD');
+        var endDate = $('#date').data('daterangepicker').endDate.format('YYYY-MM-DD');
+
+        // Kirim data ke server menggunakan AJAX
+        $.ajax({
+            url: "{{ route('admin.index') }}", // Ganti dengan URL tujuan Anda
+            method: "POST",
+            data: {
+                _token: '{{ csrf_token() }}',
+                start_date: startDate,
+                end_date: endDate
+            },
+            success: function(response) {
+                // Lakukan sesuatu setelah permintaan berhasil
+                console.log("Data berhasil disimpan:", response);
+            },
+            error: function(xhr, status, error) {
+                // Tangani kesalahan jika ada
+                console.error("Terjadi kesalahan:", error);
             }
         });
     });
+
+    // Menambahkan rentang tanggal
+    $('#date').daterangepicker({
+        "locale": {
+            "format": "DD-MM-YYYY"
+        },
+        "ranges": {
+            'Rentang Kustom': [moment().startOf('day'), moment().endOf('day')]
+        }
+    });
+
+    // Menyimpan status yang dipilih ke dalam local storage saat dropdown berubah
+    $(document).on('change', '.status-dropdown', function() {
+        var rowId = $(this).closest('tr').data('row-id');
+        var status = $(this).val();
+        localStorage.setItem('selectedStatus_' + rowId, status);
+    });
+
+    // Memeriksa apakah status sebelumnya telah disimpan di local storage dan mengatur nilai dropdown sesuai
+    $('.status-dropdown').each(function() {
+        var rowId = $(this).closest('tr').data('row-id');
+        var savedStatus = localStorage.getItem('selectedStatus_' + rowId);
+        if (savedStatus) {
+            $(this).val(savedStatus);
+        }
+    });
+});
+
 </script>
+
 
 @endsection

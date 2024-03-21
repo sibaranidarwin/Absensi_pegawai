@@ -20,12 +20,12 @@
                     </a>
                     <ul class="nav nav-treeview" style="padding-left: 15px;">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route ('admin.employees.department') }}" class="nav-link">
                                 <p>Departemen</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route ('admin.employees.jabatan') }}" class="nav-link">
                                 <p>Jabatan</p>
                             </a>
                         </li>

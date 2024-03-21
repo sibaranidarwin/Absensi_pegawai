@@ -46,5 +46,11 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth','
     Route::get('/employees/profile/{employee_id}', 'EmployeeController@employeeProfile')->name('employees.profile');
     Route::delete('/employees/{employee_id}', 'EmployeeController@destroy')->name('employees.delete');
 
+    //Routes untuk Departemen
+    Route::get('/employees/departement', 'AdminController@departement')->name('employees.department');
+
+
+    //Route untuk Jabatan
+    Route::get('/employees/jabatan', 'AdminController@jabatan')->name('employees.jabatan');
 });
 
