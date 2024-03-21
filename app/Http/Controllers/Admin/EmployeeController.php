@@ -27,7 +27,7 @@ class EmployeeController extends Controller
     
         // dd($data);
         return view('admin.employees.index')->with($data);
-
+    }
     
     public function create() {
         $data = [

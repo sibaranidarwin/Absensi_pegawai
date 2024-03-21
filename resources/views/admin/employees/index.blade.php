@@ -73,8 +73,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if($employee->position)
-                                            {{ $employee->position->position_name }}
+                                        @if($employee->position_id = '1')
+                                            Position
                                         @else
                                             Position Unknown
                                         @endif
