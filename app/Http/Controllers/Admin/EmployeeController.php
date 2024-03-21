@@ -20,11 +20,14 @@ class EmployeeController extends Controller
 {
     public function index() {
         
-        $data = [  'personnel_employee'=> DB::table('personnel_employee')
-        ->join('personnel_department', 'personnel_employee.emp_code', '=', 'personnel_department.dept_code')
-        ->select('personnel_employee.*', 'personnel_department.dept_name')
-        ->get()];
-    
+        $data = [
+            'personnel_employee' => DB::table('personnel_employee')
+                ->join('personnel_department', 'personnel_employee.department_id', '=', 'personnel_department.id')
+                ->join('personnel_position', 'personnel_employee.position_id', '=', 'personnel_position.id')
+                ->select('personnel_employee.*', 'personnel_department.dept_name', 'personnel_position.position_name')
+                ->get()
+        ];
+        
         // dd($data);
         return view('admin.employees.index')->with($data);
     }
@@ -123,10 +126,12 @@ class EmployeeController extends Controller
     
     public function attendanceByDateRange($startDate, $endDate) {
         $attendances = DB::table('iclock_transaction')
-            ->select('iclock_transaction.*', 'personnel_employee.first_name', 'personnel_employee.last_name', 'personnel_employee.department_id')
+            ->select('iclock_transaction.id', 'iclock_transaction.emp_id', 'iclock_transaction.sync_status', 'iclock_transaction.punch_time', 'iclock_transaction.punch_state', 'personnel_employee.first_name', 'personnel_employee.department_id', 'personnel_department.dept_name')
             ->join('personnel_employee', 'iclock_transaction.emp_id', '=', 'personnel_employee.id')
+            ->join('personnel_department', 'personnel_employee.department_id', '=', 'personnel_department.id')
             ->whereBetween('iclock_transaction.punch_time', [$startDate, $endDate])
             ->get();
+
         return $attendances;
     }
     
@@ -134,11 +139,12 @@ class EmployeeController extends Controller
     
 
     public function attendanceByDate($date) {
-        $attendances = DB::table('iclock_transaction')
-            ->select('iclock_transaction.id', 'iclock_transaction.emp_id', 'iclock_transaction.sync_status', 'iclock_transaction.punch_time', 'iclock_transaction.punch_state', 'personnel_employee.first_name', 'personnel_employee.department_id')
+            $attendances = DB::table('iclock_transaction')
+            ->select('iclock_transaction.id', 'iclock_transaction.emp_id', 'iclock_transaction.sync_status', 'iclock_transaction.punch_time', 'iclock_transaction.punch_state', 'personnel_employee.first_name', 'personnel_employee.department_id', 'personnel_department.dept_name')
             ->join('personnel_employee', 'iclock_transaction.emp_id', '=', 'personnel_employee.id')
+            ->join('personnel_department', 'personnel_employee.department_id', '=', 'personnel_department.id')
             ->whereDate('iclock_transaction.punch_time', $date)
-            ->get();
+            ->get();    
     
         return $attendances->map(function($attendance) {
             // Menambahkan properti attendanceToday ke setiap entri employee

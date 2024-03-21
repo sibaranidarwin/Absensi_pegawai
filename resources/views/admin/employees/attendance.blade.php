@@ -90,21 +90,13 @@
                                 <tr data-row-id="{{ $employee->id }}">
                                     <td>{{$loop->iteration}}</td>
                                     <td>{{ $employee->first_name }}</td>
-                                    <td>
-                                        @if($employee->department_id == 0)
-                                            Departement
-                                        @elseif($employee->department_id == 1)
-                                            Departement
-                                        @else
-                                            Unknown
-                                        @endif
-                                    </td>
+                                    <td>{{ $employee->dept_name }}</td>
                                     <td>{{ date('Y-m-d', strtotime($employee->punch_time)) }}</td>
                                     <td>{{ substr($employee->punch_time, 11, 8) }}</td>
                                     <td>
-                                        @if($employee->sync_status == 0)
+                                        @if($employee->punch_state == 0)
                                             Check In
-                                        @elseif($employee->sync_status == 1)
+                                        @elseif($employee->punch_state == 1)
                                             Check Out
                                         @else
                                             Unknown
@@ -151,7 +143,9 @@
                                             <option value="cuti">Cuti</option>
                                         </select>
                                     </td>
-                                    <td>Tidak Bisa Hadir</td>
+                                    <td>
+                                        <input type="text" class="alasan-input form-control" data-row-id="{{ $employee->id }}">
+                                    </td>                                    
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -202,8 +196,10 @@ $(document).ready(function() {
                                 // Return keterangan yang dipilih dari dropdown
                                 return $(node).find('.status-dropdown option:selected').text();
                             } else if (column === 8) { // Kolom Alasan
-                                return 'Tidak Bisa Hadir'; // Kolom Alasan selalu sama
-                            } else {
+                                var rowId = $(node).closest('tr').data('row-id');
+                                return localStorage.getItem('alasan_' + rowId) || ''; // Mengambil nilai alasan dari localStorage atau kembali string kosong jika tidak ada
+                            }
+                             else {
                                 return data; // Return data as is for other columns
                             }
                         }
@@ -223,14 +219,18 @@ $(document).ready(function() {
         var startDate = $('#date').data('daterangepicker').startDate.format('YYYY-MM-DD');
         var endDate = $('#date').data('daterangepicker').endDate.format('YYYY-MM-DD');
 
+        // Ambil data alasan yang dimasukkan oleh pengguna
+        var alasanData = getAlasanData();
+
         // Kirim data ke server menggunakan AJAX
         $.ajax({
-            url: "{{ route('admin.index') }}", // Ganti dengan URL tujuan Anda
+            url: "{{ route('admin.employees.attendance') }}", // Ganti dengan URL tujuan Anda
             method: "POST",
             data: {
                 _token: '{{ csrf_token() }}',
                 start_date: startDate,
-                end_date: endDate
+                end_date: endDate,
+                alasan: JSON.stringify(alasanData) // Mengirim data alasan dalam format JSON
             },
             success: function(response) {
                 // Lakukan sesuatu setelah permintaan berhasil
@@ -268,9 +268,36 @@ $(document).ready(function() {
             $(this).val(savedStatus);
         }
     });
+
+    // Menyimpan alasan yang dimasukkan oleh pengguna
+    $(document).on('change', '.alasan-input', function() {
+        var rowId = $(this).data('row-id');
+        var alasan = $(this).val();
+        // Simpan alasan ke dalam local storage agar tetap ada setelah penyegaran halaman
+        localStorage.setItem('alasan_' + rowId, alasan);
+    });
+
+    // Memeriksa apakah alasan sebelumnya telah disimpan di local storage dan mengisi input alasan sesuai
+    $('.alasan-input').each(function() {
+        var rowId = $(this).data('row-id');
+        var savedAlasan = localStorage.getItem('alasan_' + rowId);
+        if (savedAlasan) {
+            $(this).val(savedAlasan);
+        }
+    });
+
+    // Fungsi untuk mendapatkan data alasan dari input alasan
+    function getAlasanData() {
+        var alasanData = {};
+        $('.alasan-input').each(function() {
+            var rowId = $(this).data('row-id');
+            var alasan = $(this).val();
+            alasanData[rowId] = alasan;
+        });
+        return alasanData;
+    }
 });
 
 </script>
-
 
 @endsection

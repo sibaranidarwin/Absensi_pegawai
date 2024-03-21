@@ -27,8 +27,6 @@ class AdminController extends Controller
             ->get();
         
 
-
-
             return view('admin.index')->with('transactions' ,$transaction);
         }
 

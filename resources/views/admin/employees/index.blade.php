@@ -59,25 +59,9 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $employee->first_name}}</td>
+                                    <td>{{ $employee->dept_name}}</td>
                                     <td>
-
-                                        @if($employee->dept_name  == "IT")
-                                                IT
-                                        @elseif($employee->dept_name  == "Finance")
-                                                Finance
-                                        @elseif($employee->dept_name  == "Purchasing")
-                                                Purchasing
-                                        @else
-                                                Unknown
-
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($employee->position_id = '1')
-                                            Position
-                                        @else
-                                            Position Unknown
-                                        @endif
+                                        {{ $employee->position_name }}
                                     </td>                             
                                     {{-- <td></td> --}}
                                     <td>{{ $employee->hire_date}}</td>
