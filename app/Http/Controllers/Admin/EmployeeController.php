@@ -19,9 +19,12 @@ use function Ramsey\Uuid\v1;
 class EmployeeController extends Controller
 {
     public function index() {
-        $data = [
-            'personnel_employee' => DB::table('personnel_employee')->get()
-        ];
+        
+        $data = [  'personnel_employee'=> DB::table('personnel_employee')
+        ->join('personnel_department', 'personnel_employee.emp_code', '=', 'personnel_department.dept_code')
+        ->select('personnel_employee.*', 'personnel_department.dept_name')
+        ->get()];
+    
         // dd($data);
         return view('admin.employees.index')->with($data);
     }

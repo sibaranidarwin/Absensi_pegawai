@@ -20,13 +20,13 @@ class AdminController extends Controller
         public function index() {
             $currentDate = Carbon::now()->toDateString();
 
-            $transaction = DB::table('att_attemployee')
-                ->join('personnel_employee', 'att_attemployee.emp_id', '=', 'personnel_employee.id')
-                ->select('att_attemployee.*', 'personnel_employee.first_name')
-                ->whereDate('att_attemployee.create_time', $currentDate)
-                ->get();
+            $transaction = DB::table('iclock_transaction')
+            ->join('personnel_employee', 'iclock_transaction.emp_id', '=', 'personnel_employee.id')
+            ->select('iclock_transaction.*', 'personnel_employee.first_name')
+            ->whereDate('iclock_transaction.punch_time', $currentDate)
+            ->get();
+        
 
-            // dd($transaction);
 
             return view('admin.index')->with('transactions' ,$transaction);
         }

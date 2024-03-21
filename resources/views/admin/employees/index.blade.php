@@ -60,11 +60,13 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $employee->first_name}}</td>
                                     <td>
-                                        @if($employee->department_id == 0)
-                                                Departement
-                                            @elseif($employee->department_id == 1)
-                                                Departement
-                                            @else
+                                        @if($employee->dept_name  == "IT")
+                                                IT
+                                        @elseif($employee->dept_name  == "Finance")
+                                                Finance
+                                        @elseif($employee->dept_name  == "Purchasing")
+                                                Purchasing
+                                        @else
                                                 Unknown
                                         @endif
                                     </td>
