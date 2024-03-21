@@ -5,11 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-<<<<<<< HEAD
         "php": "^8.1.26",
-=======
-        "php": "^8.2.16",
->>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
