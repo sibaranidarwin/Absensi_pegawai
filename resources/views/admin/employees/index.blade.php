@@ -60,23 +60,19 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $employee->first_name}}</td>
                                     <td>
-                                        @if($employee->department_id == 0)
-                                                Departement
-                                            @elseif($employee->department_id == 1)
-                                                Departement
-                                            @else
-                                                Unknown
+                                        @if($employee->department)
+                                        {{ $employee->department->dept_name }}
+                                        @else
+                                        Unknown
                                         @endif
                                     </td>
                                     <td>
-                                        @if($employee->app_role == 1)
-                                            Karyawan
-                                        @elseif($employee->app_role == 0)
-                                            Manager
+                                        @if($employee->position)
+                                            {{ $employee->position->position_name }}
                                         @else
-                                            Role Unknown
+                                            Position Unknown
                                         @endif
-                                    </td>                                 
+                                    </td>                             
                                     {{-- <td></td> --}}
                                     <td>{{ $employee->hire_date}}</td>
                                     {{-- <td></td> --}}
