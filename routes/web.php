@@ -48,9 +48,19 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth','
 
     //Routes untuk Departemen
     Route::get('/employees/departement', 'AdminController@departement')->name('employees.department');
+    Route::get('/departement/create', 'AdminController@create')->name('departement.create');
+    Route::post('/departement', 'AdminController@store')->name('departement.store');
+    Route::get('/departement/{id}/edit', 'AdminController@edit')->name('departement.edit');
+    Route::put('/departement/update/{id}', 'AdminController@update')->name('departement.update');
+    Route::delete('/departement/{id}', 'AdminController@destroy')->name('departement.destroy');
 
 
     //Route untuk Jabatan
-    Route::get('/employees/jabatan', 'AdminController@jabatan')->name('employees.jabatan');
+     Route::get('positions', 'PositionController@index')->name('positions');
+     Route::get('/positions/create', 'PositionController@create')->name('positions.create');
+     Route::post('/positions', 'PositionController@store')->name('positions.store');
+     Route::get('/positions/{id}/edit', 'PositionController@edit')->name('positions.edit');
+     Route::put('/positions/{id}', 'PositionController@update')->name('positions.update');
+     Route::delete('/positions/{id}', 'PositionController@destroy')->name('positions.destroy');
 });
 

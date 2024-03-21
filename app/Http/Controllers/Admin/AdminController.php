@@ -31,34 +31,67 @@ class AdminController extends Controller
         }
 
     
-    public function attendanceByDate($date) {
-        $employees = DB::table('personnel_employee')->select('id', 'first_name', 'last_name', 'create_time', 'status' , 'enroll_sn', 'update_time', 'department_id')->get();
-        $attendances = DB::table('att_attemployee')->get()->filter(function($attendance, $key) use ($date){
-            return $attendance->create_time;
-        });
-        return $employees->map(function($employee, $key) use($attendances) {
-            $attendance = DB::table('att_attemployee')->pluck('create_time')->first();
-            $employee->attendanceToday = $attendance;
-       
-            return $employee;
-        });
+    public function departement (){
+        $data =  DB::table('personnel_department')->get();
+
+        return view('admin.departement.index')->with('datas', $data);
+    }
+    
+    public function create()
+    {
+        return view('admin.departement.create');
     }
 
-    public function attendanceByDateRange($startDate, $endDate) {
-        $attendances = DB::table('att_attemployee')
-        ->whereBetween('create_time', [$startDate, $endDate])
-        ->get();    
-        $employees = collect();
-    
-        foreach ($attendances as $attendance) {
-            $employee = DB::table('personnel_employee')->select('id', 'first_name', 'last_name', 'create_time', 'status' , 'enroll_sn', 'update_time', 'department_id')->find($attendance->emp_id);
-            if ($employee) {
-                $employee->attendanceToday = $attendance;
-                $employees->push($employee);
-            }
-        }
-        return $employees;
+    public function store(Request $request)
+    {
+        // Validasi data yang dikirimkan dari form
+        $request->validate([
+            'dept_code' => 'required',
+            'dept_name' => 'required',
+        ]);
+
+        // Simpan data departemen baru ke dalam database
+        Department::create($request->all());
+
+        // Redirect kembali ke halaman daftar departemen
+        return redirect()->route('departement.index')->with('success', 'Departemen berhasil ditambahkan.');
     }
+
+    public function edit($id)
+    {
+        // Mengambil data departemen berdasarkan ID
+        $departement = Department::find($id);
+
+        // Kemudian kirim data ke view edit
+        return view('admin.departement.edit', compact('departement'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validasi data yang dikirimkan dari form
+        $request->validate([
+            'dept_code' => 'required',
+            'dept_name' => 'required',
+        ]);
+
+        // Temukan data departemen berdasarkan ID
+        $departement = Department::findOrFail($id);
+        
+        // Update data departemen dengan data baru
+        $departement->update($request->all());
+
+        // Redirect kembali ke halaman daftar departemen
+        return redirect()->route('departement.index')->with('success', 'Departemen berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        // Menghapus data departemen berdasarkan ID
+        Department::destroy($id);
+        // Kemudian redirect kembali ke halaman daftar departemen
+        return redirect()->route('admin.employees.department')->with('success', 'Departement has been deleted successfully');
+    }
+
 
     public function reset_password() {
         return view('auth.reset-password');
