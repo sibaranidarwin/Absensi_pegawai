@@ -78,8 +78,10 @@
                                 @foreach($transactions as $transaction)
                                 <tr>
                                     <td>{{ $transaction->first_name }}</td>
+
                                     <td>{{ date('Y-m-d', strtotime($transaction->punch_time)) }}</td>
                                     <td>{{ date('H:i:s', strtotime($transaction->punch_time)) }}</td>
+
                                     <td>
                                         @if($transaction->punch_state == 0)
                                             Check-in
