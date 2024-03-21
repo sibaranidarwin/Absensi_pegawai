@@ -78,8 +78,8 @@
                                 @foreach($transactions as $transaction)
                                 <tr>
                                     <td>{{ $transaction->first_name }}</td>
-                                    <td>{{ date('Y-m-d', strtotime($transaction->create_time)) }}</td>
-                                    <td>{{ date('H:i:s', strtotime($transaction->create_time)) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($transaction->change_time)) }}</td>
+                                    <td>{{ date('H:i:s', strtotime($transaction->change_time)) }}</td>
                                     <td>
                                         @if($transaction->status == 1)
                                             Check-in
