@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "2ba00459e3e63fc03add961741a9cb96",
+=======
+    "content-hash": "9e2d5df9955dba99b198fae41703a003",
+>>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3466,6 +3470,7 @@
         },
         {
             "name": "psy/psysh",
+<<<<<<< HEAD
             "version": "v0.12.2",
             "source": {
                 "type": "git",
@@ -3476,6 +3481,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bobthecow/psysh/zipball/9185c66c2165bbf4d71de78a69dccf4974f9538d",
                 "reference": "9185c66c2165bbf4d71de78a69dccf4974f9538d",
+=======
+            "version": "v0.12.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobthecow/psysh.git",
+                "reference": "39621c73e0754328252f032c6997b983afc50431"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/39621c73e0754328252f032c6997b983afc50431",
+                "reference": "39621c73e0754328252f032c6997b983afc50431",
+>>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
                 "shasum": ""
             },
             "require": {
@@ -3539,9 +3556,15 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.2"
             },
             "time": "2024-03-17T01:53:00+00:00"
+=======
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.1"
+            },
+            "time": "2024-03-15T03:22:57+00:00"
+>>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
         },
         {
             "name": "ralouphie/getallheaders",
@@ -3945,6 +3968,7 @@
         },
         {
             "name": "symfony/css-selector",
+<<<<<<< HEAD
             "version": "v6.4.3",
             "source": {
                 "type": "git",
@@ -3959,6 +3983,22 @@
             },
             "require": {
                 "php": ">=8.1"
+=======
+            "version": "v7.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/css-selector.git",
+                "reference": "ec60a4edf94e63b0556b6a0888548bb400a3a3be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ec60a4edf94e63b0556b6a0888548bb400a3a3be",
+                "reference": "ec60a4edf94e63b0556b6a0888548bb400a3a3be",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+>>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
             },
             "type": "library",
             "autoload": {
@@ -3990,7 +4030,11 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/css-selector/tree/v6.4.3"
+=======
+                "source": "https://github.com/symfony/css-selector/tree/v7.0.3"
+>>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
             },
             "funding": [
                 {
@@ -4006,7 +4050,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2024-01-23T14:51:35+00:00"
+=======
+            "time": "2024-01-23T15:02:46+00:00"
+>>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -8578,7 +8626,11 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
+<<<<<<< HEAD
         "php": "^8.1.26"
+=======
+        "php": "^8.2.16"
+>>>>>>> ec4141d1fad9e3931e61a7d2070705414eb18e8a
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

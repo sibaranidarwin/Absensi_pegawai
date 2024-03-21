@@ -89,13 +89,8 @@
                                     <td>{{ $employee->id }}</td>
                                     <td>{{ $employee->first_name}}</td>
                                     <td>
-                                    @if($employee->department_id == 0)
-                                            Departement
-                                        @elseif($employee->department_id == 1)
-                                            Departement
-                                        @else
-                                            Unknown
-                                        @endif
+                                    ({{ $employee->department_id}})
+            
                                     </td>
                                     <td>{{ date('Y-m-d', strtotime($employee->punch_time)) }}</td>
                                     <td>{{ substr($employee->punch_time, 11, 8) }}</td>

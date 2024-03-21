@@ -45,13 +45,13 @@
                         <table class="table table-bordered table-hover" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>No</th>
                                     <th>Nama</th>
                                     <th>Department</th>
                                     <th>Jabatan</th>
                                     <th>Tanggal Bergabung</th>
                                     {{-- <th>Gaji</th> --}}
-                                    <th class="none">Aksi</th>
+                                    <th> Aksi </th>
                                 </tr>
                             </thead>
                             <tbody>
