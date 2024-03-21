@@ -37,7 +37,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth','
     Route::post('/employees', 'EmployeeController@store')->name('employees.store');
     Route::get('/dashboard', 'AdminController@index')->name('index');
 
-    //Routes untuk dashboard
+    //Routes untuk transaksi
     Route::get('/employees/attendance', 'EmployeeController@attendance')->name('employees.attendance');
     Route::post('/employees/attendance', 'EmployeeController@attendance')->name('employees.attendance');
 
