@@ -2,10 +2,16 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Employee extends Model
 {
+    use HasFactory;
+    protected $table = 'personnel_employee';    
+
     protected $dates = ['created_at', 'dob','updated_at', 'join_date'];
     protected $fillable = [
         'create_time',
@@ -79,4 +85,9 @@ class Employee extends Model
     public function expense() {
         return $this->hasMany('App\Expense');
     }
+
+    public function position(){
+        return $this->belongsTo('App\Position');
+    }
+    
 }
