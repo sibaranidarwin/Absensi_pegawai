@@ -42,17 +42,52 @@
                     <!-- Form untuk menambah departemen -->
                     <form action="{{ route('admin.departement.store') }}" method="POST" class="p-3">
                         @csrf
-                        <div class="mb-3">
-                            <label for="departemen_code" class="form-label">Departemen Code</label>
-                            <input type="text" class="form-control" id="departemen_code" name="departemen_code" placeholder="Masukkan Kode Departemen">
+                        <div class="mb-3 row">
+                            <label for="departemen_code" class="col-sm-3 col-form-label">Departemen Code</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="departemen_code" name="departemen_code" placeholder="Masukkan Kode Departemen">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="departemen_name" class="form-label">Departemen Name</label>
-                            <input type="text" class="form-control" id="departemen_name" name="departemen_name" placeholder="Masukkan Nama Departemen">
+                        <div class="mb-3 row">
+                            <label for="departemen_name" class="col-sm-3 col-form-label">Departemen Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="departemen_name" name="departemen_name" placeholder="Masukkan Nama Departemen">
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Tambah Departemen</button>
+                        <div class="mb-3 row">
+                            <div class="col-sm-3">Is Default</div>
+                            <div class="col-sm-9">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="is_default" name="is_default" value="1">
+                                    <label class="form-check-label" for="is_default">Centang jika default</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="parent_dept_id" class="col-sm-3 col-form-label">Parent Department ID</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="parent_dept_id" name="parent_dept_id" placeholder="Masukkan ID Departemen Induk (jika ada)">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="dept_manager_id" class="col-sm-3 col-form-label">Department Manager ID</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="dept_manager_id" name="dept_manager_id" placeholder="Masukkan ID Manager Departemen">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="company_id" class="col-sm-3 col-form-label">Company ID</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="company_id" name="company_id" placeholder="Masukkan ID Perusahaan">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9">
+                                <button type="submit" class="btn btn-primary">Tambah Departemen</button>
+                            </div>
+                        </div>
                     </form>
-
                 </div>
             </div>
         </div>

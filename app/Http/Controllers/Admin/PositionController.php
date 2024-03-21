@@ -100,6 +100,6 @@ class PositionController extends Controller
 
         // Redirect ke halaman index dengan pesan sukses
         return redirect()->back()
-            ->with('success', 'Position deleted successfully.');
+            ->with('danger', 'Position deleted successfully.');
     }
 }

@@ -5,9 +5,6 @@
     @can('admin-access')
         href="{{ route('admin.index') }}"
     @endcan
-    @can('employee-access')
-        href="{{ route('employee.index') }}"
-    @endcan
     class="brand-link text-center">
         <span class="brand-text font-weight-light ">Absence Here!</span>
     </a>
@@ -15,20 +12,12 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                {{-- @if (Auth::user()->employee) --}}
-                {{-- <img
-                    src="/storage/{{ Auth::user()->employee->photo }}"
-                    class="img-circle elevation-2"
-                    alt="User Image"
-                />
-                @else --}}
+            <div class="image">      
                 <img
                     src="/dist/img/firyanul.png"
                     class="img-circle elevation-2"
                     alt="User Image"
                 />
-                {{-- @endif --}}
                 
             </div>
             <div class="info">
@@ -55,20 +44,67 @@
                         </p>
                     </a>
                 </li>
-                @include('includes.admin.sidebar_items')
-                @endcan
-                @can('employee-access')
-                <li class="nav-item">
-                    <a href="{{ route('employee.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                <!-- sidebar.blade.php atau menu.blade.php -->
+                <!-- Menu Karyawan -->
+                <li class="nav-item has-treeview {{ request()->routeIs(['admin.employees.index']) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs(['admin.employees.index']) ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-users"></i>
                         <p>
-                                Dashboard Karyawan
-                            
+                            Karyawan
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.employees.index') }}" class="nav-link {{ request()->routeIs('admin.employees.index') ? 'active' : '' }}">
+                                <p>&nbsp; Daftar Karyawan</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                @include('includes.employee.sidebar_items')
+
+                <!-- Menu Organisasi -->
+                <li class="nav-item has-treeview {{ request()->routeIs(['admin.employees.department', 'admin.positions']) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs(['admin.employees.department', 'admin.positions']) ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-building"></i>
+                        <p>
+                            Organisasi
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.employees.department') }}" class="nav-link {{ request()->routeIs('admin.employees.department') ? 'active' : '' }}">
+                                <p>&nbsp; Departemen</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.positions') }}" class="nav-link {{ request()->routeIs('admin.positions') ? 'active' : '' }}">
+                                <p>&nbsp; Jabatan</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                </li>
+                <li class="nav-item has-treeview {{ request()->routeIs('admin.employees.attendance') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('admin.employees.attendance') ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-file"></i>
+                        <p>
+                            Data
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.employees.attendance') }}" class="nav-link {{ request()->routeIs('admin.employees.attendance') ? 'active' : '' }}">
+                                <p>&nbsp;Transaksi</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
                 @endcan
+              
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
