@@ -297,7 +297,6 @@ $(document).ready(function() {
         return alasanData;
     }
 });
-
 </script>
 
 @endsection
