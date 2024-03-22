@@ -62,5 +62,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth','
      Route::get('/positions/{id}/edit', 'PositionController@edit')->name('positions.edit');
      Route::put('/positions/{id}', 'PositionController@update')->name('positions.update');
      Route::delete('/positions/{id}', 'PositionController@destroy')->name('positions.destroy');
+
+     //
+    Route::get('/employees/{employee}/edit', 'EmployeeController@edit')->name('employees.edit');
+    Route::put('/employees/{employee}', 'EmployeeController@updatev2')->name('employees.update');
 });
 

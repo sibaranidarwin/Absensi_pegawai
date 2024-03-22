@@ -19,15 +19,16 @@ use function Ramsey\Uuid\v1;
 class EmployeeController extends Controller
 {
     public function index() {
-        
         $data = [
             'personnel_employee' => DB::table('personnel_employee')
-                ->join('personnel_department', 'personnel_employee.department_id', '=', 'personnel_department.id')
-                ->join('personnel_position', 'personnel_employee.position_id', '=', 'personnel_position.id')
+                ->leftJoin('personnel_department', 'personnel_employee.department_id', '=', 'personnel_department.id')
+                ->leftJoin('personnel_position', 'personnel_employee.position_id', '=', 'personnel_position.id')
                 ->select('personnel_employee.*', 'personnel_department.dept_name', 'personnel_position.position_name')
-                ->get()
+                ->get(),
+            'departments' =>  DB::table('personnel_department')->get(), // Mengambil semua data departemen
+            'positions' =>  DB::table('personnel_position')->get(), // Mengambil semua data jabatan
         ];
-        
+    
         // dd($data);
         return view('admin.employees.index')->with($data);
     }
@@ -175,5 +176,42 @@ class EmployeeController extends Controller
     public function employeeProfile($employee_id) {
         $employee = Employee::findOrFail($employee_id);
         return view('admin.employees.profile')->with('employee', $employee);
+    }
+
+    public function updatev2(Request $request, $id) {
+        // Validasi data yang diterima dari form
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'department' => 'required|integer', // Pastikan departemen merupakan integer (ID departemen)
+            'position' => 'required|integer', // Pastikan jabatan merupakan integer (ID jabatan)
+            'hire_date' => 'required|date',
+        ]);
+    
+        // Mengambil data karyawan yang akan diupdate
+        $employee = DB::table('personnel_employee')
+            ->where('id', $id)
+            ->first();
+    
+        // Jika data karyawan tidak ditemukan, kembalikan response dengan status 404 (Not Found)
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Data karyawan tidak ditemukan.');
+        }
+    
+        // Menyiapkan data baru yang akan diupdate
+        $data = [
+            'first_name' => $request->input('name'),
+            'department_id' => $request->input('department'),
+            'position_id' => $request->input('position'),
+            'hire_date' => $request->input('hire_date'),
+            // Tambahkan kolom-kolom lain yang perlu diupdate sesuai kebutuhan
+        ];
+    
+        // Melakukan update data karyawan
+        DB::table('personnel_employee')
+            ->where('id', $id)
+            ->update($data);
+    
+        // Mengembalikan response berhasil
+        return redirect()->route('admin.employees.index')->with('success', 'Data karyawan berhasil diperbarui.');
     }
 }
