@@ -18,29 +18,47 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
     {
         public function index() {
-            $currentDate = Carbon::now()->toDateString();
-
-            $transaction = DB::table('iclock_transaction')
-            ->join('personnel_employee', 'iclock_transaction.emp_id', '=', 'personnel_employee.id')
-            ->select('iclock_transaction.*', 'personnel_employee.first_name')
-            ->whereDate('iclock_transaction.punch_time', $currentDate)
-            ->get();
+            // Get current date
+            $currentDate = now()->toDateString();
+            $employeesall = DB::table('personnel_employee')->get();
         
-
-            return view('admin.index')->with('transactions' ,$transaction);
+            // Query to fetch all employees and their first clock-in time and last clock-out time for the current date
+            $employees = DB::table('personnel_employee')
+                ->leftJoin('iclock_transaction', 'personnel_employee.id', '=', 'iclock_transaction.emp_id')
+                ->select(
+                    'personnel_employee.id',
+                    'personnel_employee.first_name',
+                    'personnel_employee.last_name',
+                    DB::raw('MIN(iclock_transaction.punch_time) as clock_in'),
+                    DB::raw('MAX(iclock_transaction.punch_time) as clock_out')
+                )
+                ->whereDate('iclock_transaction.punch_time', $currentDate)
+                // ->orWhereNull('iclock_transaction.punch_time') // Include employees without attendance records
+                ->groupBy('personnel_employee.id', 'personnel_employee.first_name', 'personnel_employee.last_name')
+                ->get();
+        
+            return view('admin.index', compact('employees', 'currentDate','employeesall'));
         }
 
-    
     public function departement (){
         $data =  DB::table('personnel_department')->get();
 
-        return view('admin.departement.index')->with('datas', $data);
+        foreach ($data as $department) {
+            $company = DB::table('personnel_company')->where('id', $department->company_id)->first();
+            $department->company_name = $company ? $company->company_name : 'No Company Assigned';
+        }
+
+        return view('admin.departement.index', compact('data'));
     }
     
     public function create()
     {
-        return view('admin.departement.create');
+        $departments = DB::table('personnel_department')->get();
+        $companies = DB::table('personnel_company')->select('id','company_code', 'company_name')->get();
+        return view('admin.departement.create', compact('departments', 'companies'));
+        
     }
+
 
     public function store(Request $request)
     {
@@ -71,9 +89,10 @@ class AdminController extends Controller
     {
         // Mengambil data departemen berdasarkan ID
         $departement = DB::table('personnel_department')->find($id);
+        $companies = DB::table('personnel_company')->get();
     
         // Kemudian kirim data ke view edit
-        return view('admin.departement.edit', compact('departement'));
+        return view('admin.departement.edit', compact('departement', 'companies'));
     }    
 
     public function update(Request $request, $id)

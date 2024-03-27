@@ -50,15 +50,17 @@
                                     <th>No</th>
                                     <th>Departemen Code</th>
                                     <th>Departemen Name</th>
+                                    <th>Perusahaan</th>
                                     <th>Aksi</th> <!-- Tambah kolom aksi -->
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($datas as $key => $data)
+                                @foreach($data as $key => $data)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $data->dept_code }}</td>
                                     <td>{{ $data->dept_name }}</td>
+                                    <td>{{ $data->company_name}}</td>
                                     <td>
                                         <a href="{{ route('admin.departement.edit', $data->id) }}" class="btn btn-primary">Edit</a>
                                         <form action="{{ route('admin.departement.destroy', $data->id) }}" method="POST" style="display: inline-block;">

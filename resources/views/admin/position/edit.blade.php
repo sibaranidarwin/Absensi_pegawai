@@ -30,13 +30,17 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="parent_position_id">Parent Position ID:</label>
-                            <input type="text" class="form-control" id="parent_position_id" name="parent_position_id" value="{{ $position->parent_position_id }}">
+                            <label for="company_id" class="col-sm-3 col-form-label">Company</label>
+                            <div class="col-sm-9">
+                                <select class="form-select" id="company_id" name="company_id">
+                                    <option value="">-- Select Company --</option>
+                                    @foreach($companies as $company)
+                                        <option value="{{ $company->id }}" {{ $position->company_id == $company->id ? 'selected' : '' }}>{{ $company->company_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="company_id">Company ID:</label>
-                            <input type="text" class="form-control" id="company_id" name="company_id" value="{{ $position->company_id }}">
-                        </div>
+
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </form>
                 </div>

@@ -21,7 +21,9 @@ class PositionController extends Controller
 
     public function create()
     {
-        return view('admin.position.create');
+        $companies = DB::table('personnel_company')->select('id','company_code', 'company_name')->get();
+
+        return view('admin.position.create', compact('companies'));
     }
 
 
@@ -31,8 +33,8 @@ class PositionController extends Controller
         $request->validate([
             'position_code' => 'required|unique:personnel_position',
             'position_name' => 'required',
-            'is_default' => 'required',
-            'parent_position_id' => 'required',
+            'is_default' => 'nullable',
+            'parent_position_id' => 'nullable',
             'company_id' => 'required',
         ]);
     
@@ -56,7 +58,8 @@ class PositionController extends Controller
     public function edit($id)
     {
         $position = Position::findOrFail($id);
-        return view('admin.position.edit', compact('position'));
+        $companies = DB::table('personnel_company')->get();
+        return view('admin.position.edit', compact('position', 'companies'));
     }
 
 

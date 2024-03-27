@@ -58,14 +58,18 @@
                                     <option value="0">Tidak</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="parent_position_id" class="form-label">ID Posisi Induk</label>
-                                <input type="text" class="form-control" id="parent_position_id" name="parent_position_id" placeholder="Masukkan ID Posisi Induk">
+                            <div class="form-group">
+                                <label for="company_id" class="col-sm-3 col-form-label">Company:</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select" id="company_id" name="company_id">
+                                        <option value="">-- Select Company --</option>
+                                        @foreach($companies as $company)
+                                            <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="company_id" class="form-label">ID Perusahaan</label>
-                                <input type="text" class="form-control" id="company_id" name="company_id" placeholder="Masukkan ID Perusahaan">
-                            </div>
+
                             <button type="submit" class="btn btn-primary">Tambah Posisi</button>
                         </form>
                     </div>

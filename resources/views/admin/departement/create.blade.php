@@ -64,21 +64,14 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="parent_dept_id" class="col-sm-3 col-form-label">Parent Department ID</label>
+                            <label for="company_id" class="col-sm-3 col-form-label">Company</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="parent_dept_id" name="parent_dept_id" placeholder="Masukkan ID Departemen Induk (jika ada)">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="dept_manager_id" class="col-sm-3 col-form-label">Department Manager ID</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="dept_manager_id" name="dept_manager_id" placeholder="Masukkan ID Manager Departemen">
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label for="company_id" class="col-sm-3 col-form-label">Company ID</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="company_id" name="company_id" placeholder="Masukkan ID Perusahaan">
+                                <select class="form-select" id="company_id" name="company_id">
+                                    <option value="">-- Select Company --</option>
+                                    @foreach($companies as $company)
+                                        <option value="{{ $company->id }}">{{ $company->company_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="row">

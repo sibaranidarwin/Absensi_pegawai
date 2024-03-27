@@ -194,7 +194,11 @@ $(document).ready(function() {
                         body: function (data, row, column, node) {
                             if (column === 7) { // Kolom Keterangan
                                 // Return keterangan yang dipilih dari dropdown
-                                return $(node).find('.status-dropdown option:selected').text();
+                                if ($(node).find('.status-dropdown').val() === '') {
+                                    return ''; // Jika status kosong, kembalikan string kosong
+                                } else {
+                                    return $(node).find('.status-dropdown option:selected').text();
+                                }
                             } else if (column === 8) { // Kolom Alasan
                                 var rowId = $(node).closest('tr').data('row-id');
                                 return localStorage.getItem('alasan_' + rowId) || ''; // Mengambil nilai alasan dari localStorage atau kembali string kosong jika tidak ada

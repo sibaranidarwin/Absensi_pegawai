@@ -62,6 +62,22 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item has-treeview {{ request()->routeIs('admin.timetable.index') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->routeIs('admin.timetable.index') ? 'active' : '' }}">
+                        <i class="nav-icon fa fa-clock"></i>
+                        <p>
+                            Time Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.timetable.index') }}" class="nav-link {{ request()->routeIs('admin.timetable.index') ? 'active' : '' }}">
+                                <p>&nbsp;Time Intervals</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
                 <!-- Menu Organisasi -->
                 <li class="nav-item has-treeview {{ request()->routeIs(['admin.employees.department', 'admin.positions']) ? 'menu-open' : '' }}">

@@ -31,71 +31,40 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <div class="row">
-               <!-- Card Merah -->
-               <div class="col-lg-4">
-                <div class="card bg-success">
-                    <div class="card-body">
-                        Check-in = {{ $transactions->where('punch_state', 0)->count() }}
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Card Hijau -->
-            <div class="col-lg-4">
-                <div class="card bg-danger">
-                    <div class="card-body">
-                        Check-out = {{ $transactions->where('punch_state', 1)->count() }}
-                    </div>
-                </div>
-            </div>
-            <!-- /.col -->
-
-            <!-- Card Kuning -->
-            <div class="col-lg-4">
-                <div class="card bg-warning">
-                    <div class="card-body text-white"> <!-- Menambahkan kelas text-white -->
-                        Total = {{ $transactions->whereIn('punch_state', [0, 1])->count() }}
-                    </div>
-                </div>
-            </div>      
+        <div class="row">      
             
             
             <div class="col-lg-12 mt-4">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Nama</th>
-                                    <th>Tanggal</th>
-                                    <th>Jam</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                
-                            <tbody>
-                                @foreach($transactions as $transaction)
-                                <tr>
-                                    <td>{{ $transaction->first_name }}</td>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <!-- <th>Departmen</th>
+                            <th>Jabatan</th> -->
+                            <th>Date</th>
+                            <th>Clock In</th>
+                            <th>Clock Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($employeesall as $employee)
+                        <tr>
+                            <td>{{ $employee->first_name }} {{ $employee->last_name }}</td>
+                            <td>{{ $currentDate }}</td>
+                            @foreach($employees as $check)
+                                @if($check->id == $employee->id)
+                                    <td>{{ $check->clock_in}}</td>
+                                    <td>{{ $check->clock_out}}</td>
+                                    @break
+                                @endif
+                            @endforeach
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-                                    <td>{{ date('Y-m-d', strtotime($transaction->punch_time)) }}</td>
-                                    <td>{{ date('H:i:s', strtotime($transaction->punch_time)) }}</td>
-
-                                    <td>
-                                        @if($transaction->punch_state == 0)
-                                            Check-in
-                                        @elseif($transaction->punch_state == 1)
-                                            Check-out
-                                        @else
-                                            Unknown
-                                        @endif
-                                    </td>                                    
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
