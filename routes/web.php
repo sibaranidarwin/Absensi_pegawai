@@ -66,8 +66,9 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware(['auth','
     Route::get('/admin/timetable', [TimeController::class, 'index'])->name('timetable.index');
     Route::get('/admin/timetable/create', [TimeController::class, 'create'])->name('timetable.create');
     Route::post('/admin/timetable', [TimeController::class, 'store'])->name('timetable.store');
-
-
+    // Route::get('/admin/timetable/{id}/edit', [TimeController::class, 'edit'])->name('timetable.edit');
+    // Route::put('/admin/timetable/{id}', [TimeController::class, 'update'])->name('timetable.update');
+    // Route::delete('/admin/timetable/{id}', [TimeController::class, 'destroy'])->name('timetable.destroy');
 
 
     //Route untuk Jabatan

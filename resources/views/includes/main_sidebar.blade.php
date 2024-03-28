@@ -66,14 +66,14 @@
                     <a href="#" class="nav-link {{ request()->routeIs('admin.timetable.index') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-clock"></i>
                         <p>
-                            Time Management
+                            Manajemen Waktu
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('admin.timetable.index') }}" class="nav-link {{ request()->routeIs('admin.timetable.index') ? 'active' : '' }}">
-                                <p>&nbsp;Time Intervals</p>
+                                <p>&nbsp;Timetable</p>
                             </a>
                         </li>
                     </ul>

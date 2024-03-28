@@ -12,8 +12,6 @@ class Department extends Model
         'dept_code',
         'dept_name',
         'is_default',
-        'parent_dept_id',
-        'dept_manager_id',
         'company_id',
     ];
 

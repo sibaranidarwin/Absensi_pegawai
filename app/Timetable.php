@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Timetable extends Model
 {
     protected $table = 'att_timeinterval';
+    
     protected $fillable = [
         'alias',
         'in_time',

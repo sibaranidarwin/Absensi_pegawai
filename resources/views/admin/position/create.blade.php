@@ -39,8 +39,6 @@
                     </div>
                     <div class="card-body">
                         @include('messages.alerts')
-                        
-                        <!-- Form untuk menambah posisi -->
                         <form action="{{ route('admin.positions.store') }}" method="POST" class="p-3">
                             @csrf
                             <div class="mb-3">
