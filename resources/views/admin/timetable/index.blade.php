@@ -26,6 +26,7 @@
                                     <th>Work Duration (minutes)</th>
                                     <th>Check In Start Time</th>
                                     <th>Check Out End Time</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,6 +38,14 @@
                                     <td>{{ $time->duration }}</td>
                                     <td>{{ \Carbon\Carbon::parse($time->in_time)->subHours(2)->format('H:i:s') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($time->in_time)->addMinutes($time->duration)->addHours(3)->format('H:i:s') }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.timetable.edit', $time->id) }}" class="btn btn-primary">Edit</a>
+                                        <form action="{{ route('admin.timetable.destroy', $time->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

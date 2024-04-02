@@ -2,12 +2,11 @@
 
 @section('content')
 
-<!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Tambah Jam Kantor</h1>
+                <h1 class="m-0 text-dark">Edit Jam Kerja</h1>
             </div>
             <!-- /.col -->
             <div class="col-sm-6">
@@ -16,7 +15,7 @@
                         <a href="{{ route('admin.index') }}">Halaman Utama</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        Tambah Jam Kantor
+                        Edit Jam Kerja
                     </li>
                 </ol>
             </div>
@@ -26,104 +25,112 @@
     </div>
     <!-- /.container-fluid -->
 </div>
-<!-- /.content-header -->
-
 
 <!-- Main content -->
 <section class="content">
-<div class="container">
+    <div class="container">
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="card">
                     <div class="card-header">
-                        Tambah Timetable
+                        Edit Timetable
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('admin.timetable.store') }}" method="POST" class="p-3">
+                        <form action="{{ route('admin.timetable.update', ['id' => $timetable->id]) }}" method="POST">
                             @csrf
+                            @method('PUT')
+
                             <div class="form-group">
                                 <label for="alias">Nama Jam Kerja:</label>
-                                <input type="text" name="alias" class="form-control" value="{{old('alias') ?? ''}}">
+                                <input type="text" name="alias" class="form-control" value="{{ $timetable->alias }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="in_time">Jam Masuk:</label>
-                                <input type="text" name="in_time" id="in_time" class="form-control" value="{{ old('in_time') ?? '' }}" placeholder="HH:mm" maxlength="5">
+                                <input type="text" name="in_time" id="in_time" class="form-control" value="{{ $timetable->in_time }}" placeholder="HH:mm" maxlength="5">
                             </div>
+
                             <div class="form-group">
                                 <label for="duration">Durasi Kerja (Menit):</label>
-                                <input type="number" name="duration" class="form-control" value="{{old('duration') ?? ''}}">
+                                <input type="number" name="duration" class="form-control" value="{{ $timetable->duration }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="in_ahead_margin">Jam Absen Masuk Dimulai:</label>
-                                <input type="number" name="in_ahead_margin" class="form-control" value="{{old('in_ahead_margin') ?? ''}}">
+                                <input type="number" name="in_ahead_margin" class="form-control" value="{{ $timetable->in_ahead_margin }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="in_above_margin">Jam Absen Masuk Terakhir:</label>
-                                <input type="number" name='in_above_margin' class="form-control" value="{{old('in_above_margin') ?? ''}}">
+                                <input type="number" name='in_above_margin' class="form-control" value="{{ $timetable->in_above_margin }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="out_ahead_margin">Jam Absen Keluar Dimulai:</label>
-                                <input type="number" name='out_ahead_margin' class="form-control" value="{{old('out_ahead_margin') ?? ''}}">
+                                <input type="number" name='out_ahead_margin' class="form-control" value="{{ $timetable->out_ahead_margin }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="out_above_margin">Jam Absen Keluar Terakhir:</label>
-                                <input type="number" name="out_above_margin" class="form-control" value="{{old('out_above_margin') ?? ''}}">
+                                <input type="number" name="out_above_margin" class="form-control" value="{{ $timetable->out_above_margin }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="allow_leave_early">Apakah diperbolehkan keluar lebih cepat?</label>
                                 <select name="allow_leave_early" class="form-control">
-                                    <option value="1" {{ old('allow_leave_early') ? 'selected' : '' }}>Yes</option>
-                                    <option value="0" {{ old('allow_leave_early') ? 'selected' : '' }}>No</option>
+                                    <option value="1" {{ $timetable->allow_leave_early == '1' ? 'selected' : '' }}>Yes</option>
+                                    <option value="0" {{ $timetable->allow_leave_early == '0' ? 'selected' : '' }}>No</option>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="work_day">Jam Kerja _ Hari</label>
-                                <input type="number" name="work_day" step="0.01" class="form-control" value="{{old('work_day') ?? ''}}">
+                                <input type="number" name="work_day" step="0.01" class="form-control" value="{{ $timetable->work_day }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="min_early_in">Toleransi Absen Masuk Lebih Awal (Menit)</label>
-                                <input type="number" name="min_early_in" class="form-control" value="{{old('min_early_in') ?? ''}}">
+                                <input type="number" name="min_early_in" class="form-control" value="{{ $timetable->min_early_in }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="min_late_out">Toleransi Absen Keluar Terakhir (Menit)</label>
-                                <input type="number" name="min_late_out" class="form-control" value="{{old('min_late_out') ?? ''}}">
+                                <input type="number" name="min_late_out" class="form-control" value="{{ $timetable->min_late_out }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="max_ot_limit">Berapa Menit Overtime</label>
-                                <input type="number" name="max_ot_limit" class="form-control" value="{{old('max_ot_limit') ?? ''}}">
+                                <input type="number" name="max_ot_limit" class="form-control" value="{{ $timetable->max_ot_limit }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="work_time_duration">Durasi Jam Kerja (Menit):</label>
-                                <input type="number" name="work_time_duration" class="form-control" value="{{old('work_time_duration') ?? ''}}">
+                                <input type="number" name="work_time_duration" class="form-control" value="{{ $timetable->work_time_duration }}">
                             </div>
+
                             <div class="form-group">
                                 <label for="company_id" class="col-sm-3 col-form-label">Company:</label>
                                 <div class="col-sm-9">
                                     <select class="form-select" id="company_id" name="company_id">
                                         <option value="">-- Select Company --</option>
                                         @foreach($companies as $company)
-                                            <option value="{{ $company->id }}" {{ (old('company_id') == $company->id) ? 'selected' : '' }}>
+                                            <option value="{{ $company->id }}" {{ $timetable->company_id == $company->id ? 'selected' : '' }}>
                                                 {{ $company->company_name }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            
 
-                            <button type="submit" class="btn btn-primary">Create Timetable</button>
+                            <button type="submit" class="btn btn-primary">Update Timetable</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
-
-<!-- /.content-wrapper -->
 
 @endsection
 
