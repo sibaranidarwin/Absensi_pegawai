@@ -55,8 +55,8 @@
                             <td>{{ $currentDate }}</td>
                             @foreach($employees as $check)
                                 @if($check->id == $employee->id)
-                                    <td>{{ $check->clock_in}}</td>
-                                    <td>{{ $check->clock_out}}</td>
+                                <td>{{ \Carbon\Carbon::parse($check->clock_in)->format('H:i:s') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($check->clock_out)->format('H:i:s') }}</td>                                
                                     @break
                                 @endif
                             @endforeach
